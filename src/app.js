@@ -50,7 +50,7 @@ app.post ("/products/addProduct", async (req, res) =>{
     res.send (products); 
 } )
 
-/* hola lauti, intente de mil maneras que me funcione el app.put pero no estaría encontrandole la solucion */ 
+/* hola lauti, intente de mil maneras que me funcione el app.put pero no estaría encontrandole la solucion. Si me podrías ayudar me vendría de 10 (ya que estuve todo el día intentando pero no le pude agarrar la mano) Gracias!!*/ 
 
 app.put ( "/products/:id", async (req, res) => {
     const products = req.body ;
