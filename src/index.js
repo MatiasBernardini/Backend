@@ -2,7 +2,6 @@ import fs from "fs"
 
 class ProductManager {
     #path = ""
-    newId = 0 
 
     constructor (path) {
         this.#path = path;
@@ -17,8 +16,23 @@ class ProductManager {
         }
     }
 
-    async addProduct ( title, description, price, code, stock ){
+    async getIDs(){
+        let products = await this.getProducts()
+
+        let ids = products.map( prods => prods.id)
+
+        let mayorID = Math.max(...ids)
+        if (mayorID === -Infinity) {
+            return 0
+        } else {
+            return mayorID
+        }
+    }
+
+    async addProduct ( {title, description, price, code, stock} ){
         let productos = await this.getProducts();
+
+        let mayorID = await this.getIDs()
 
         let repeatedCode = await productos.find ((p)=>{
            return p.code === code;
@@ -32,9 +46,8 @@ class ProductManager {
             throw new Error ("Falta completar");
         }
 
-
         const dataProduct = {
-            id : this.newId,
+            id : ++mayorID,
             title,
             description,
             price,
@@ -44,11 +57,9 @@ class ProductManager {
 
         const products = await this.getProducts ();
 
-        const updateProduct = [...products, dataProduct];
+        const updateProduct = [...products , dataProduct];
 
         await fs.promises.writeFile (this.#path, JSON.stringify(updateProduct));
-
-        this.newId++;
     }
 
     async getProductById (newId){
