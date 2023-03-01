@@ -44,11 +44,12 @@ productRouter.post ("/addProduct", async (req, res) =>{
 
 productRouter.put ( "/:id", async (req, res) => {
     const {id} = req.params
+    
     const idProduct = parseInt(id)
 
-    await product.updateProduct(idProduct, req.body)
+    const products = await product.updateProduct(idProduct, req.body)
 
-    res.send({status: "succes", payload: await product.getProductById(id)})
+    res.send(products)
 } )
 
 
