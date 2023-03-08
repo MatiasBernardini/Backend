@@ -1,12 +1,9 @@
 import { Router ,json } from "express";
-import ProductManager from "../ProductManager.js";
-import cartManagerr from "../app.js";
+import {products, cartManagerr} from "../app.js";
 
 const cartsRouter = Router()
 
 cartsRouter.use(json())
-
-const products = new ProductManager("./Product.json")
 
 cartsRouter.post("/", async (req,res)=>{
     const newProductCart = await cartManagerr.addCart()

@@ -1,33 +1,31 @@
 import { Router, json } from "express";
-import ProductManager from "../ProductManager.js";
+import {products} from "../app.js";
 
 const productRouter = Router ();
-
-const product = new ProductManager("./Product.json")
 
 productRouter.use (json());
 
 productRouter.get ("/", async (req, res) =>{
-    const products = await product.getProducts ();
+    const product = await products.getProducts ();
 
     const {limit} = req.query
     
     if (limit){
-        products.length = limit
-        return res.send(products)
+        product.length = limit
+        return res.send(product)
     }
 
-    res.send (products)
+    res.send (product)
 })
 
 productRouter.get ("/:id", async (req, res) =>{
     const id = await Number(req.params.id);
 
-    const products = await product.getProductById(id);
+    const product = await products.getProductById(id);
 
-    res.send(products);
+    res.send(product);
 
-    if (!products){
+    if (!product){
         throw new Error ("ID no encontrado")
     }
 })
@@ -37,9 +35,9 @@ productRouter.post ("/addProduct", async (req, res) =>{
     
     console.log (productData)
 
-    const products = await product.addProduct (productData);
+    const product = await products.addProduct (productData);
 
-    res.send (products); 
+    res.send (product); 
 } )
 
 productRouter.put ( "/:id", async (req, res) => {
@@ -47,18 +45,18 @@ productRouter.put ( "/:id", async (req, res) => {
     
     const idProduct = parseInt(id)
 
-    const products = await product.updateProduct(idProduct, req.body)
+    const product = await products.updateProduct(idProduct, req.body)
 
-    res.send(products)
+    res.send(product)
 } )
 
 
 productRouter.delete ("/:id", async (req, res) => {
     const id = await Number(req.params.id);
 
-    const products = await product.deleteProduct(id);
+    const product = await products.deleteProduct(id);
 
-    res.send(products);
+    res.send(product);
 })
 
 export default productRouter;
