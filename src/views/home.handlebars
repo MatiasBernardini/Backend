@@ -1,4 +1,16 @@
 <div>
-    <h1>Hello word</h1>
-    <p></p>
+    <h1>Productos:</h1>
+
+    <ul>
+        {{#each products}}
+        <li>
+            <p><b>{{title}}</b></p>
+            <p>Precio: ${{price}}</p>
+            <p>Descripción: {{description}}</p>
+            <p>Stock: {{stock}}</p>
+            <p>Categoría: {{category}}</p>
+        </li>
+        {{/each}}
+    </ul>
+
 </div>
