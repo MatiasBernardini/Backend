@@ -1,15 +1,19 @@
 <div>
-    <h1>Productos:</h1>
+    <div>
+        <h1>Productos sin actualizar</h1>
+    </div>
 
-    <ul>
-        {{#each product}}
-        <li>
-            <p><b>{{title}}</b></p>
-            <p>Precio: ${{price}}</p>
-            <p>Descripción: {{description}}</p>
-            <p>Stock: {{stock}}</p>
-        </li>
-        {{/each}}
-    </ul>
+    <div>
+        <ul>
+            {{#each product}}
+            <li>
+                <p><b>{{title}}</b></p>
+                <p>Precio: ${{price}}</p>
+                <p>Descripción: {{description}}</p>
+                <p>Stock: {{stock}}</p>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
 
 </div>

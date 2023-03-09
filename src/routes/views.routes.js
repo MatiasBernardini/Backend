@@ -10,4 +10,9 @@ viewstRouter.get('/', async (req, res) => {
     res.render('home', {product});
 });
 
+viewstRouter.get("/real_time_products", async (req,res)=>{
+    const product = await products.getProducts()
+    res.render("real_time_products", {product})                
+})
+
 export default viewstRouter;

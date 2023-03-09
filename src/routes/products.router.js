@@ -37,6 +37,8 @@ productRouter.post ("/addProduct", async (req, res) =>{
 
     const product = await products.addProduct (productData);
 
+    req.io.emit("added-Product", req.body)
+
     res.send (product); 
 } )
 
@@ -47,6 +49,9 @@ productRouter.put ( "/:id", async (req, res) => {
 
     const product = await products.updateProduct(idProduct, req.body)
 
+    const productEmit = await products.getProducts()
+    req.io.emit("update-Product", productEmit)
+
     res.send(product)
 } )
 
@@ -55,6 +60,9 @@ productRouter.delete ("/:id", async (req, res) => {
     const id = await Number(req.params.id);
 
     const product = await products.deleteProduct(id);
+
+    const productEmit = await products.getProducts()
+    req.io.emit("delete-Product", productEmit)
 
     res.send(product);
 })
