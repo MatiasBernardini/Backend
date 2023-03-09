@@ -1,10 +1,11 @@
 import express from "express"
 import { engine } from 'express-handlebars';
 import __dirname from "./utils.js"
-import productRouter from "./routes/products.router.js";
 import ProductManager from "./ProductManager.js";
 import cartManager from "./cart.js"
+import productRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/cart.routes.js";
+import viewstRouter from "./routes/views.routes.js";
 
 const app = express()
 
@@ -17,12 +18,9 @@ const cartManagerr = new cartManager ("./Cart.json")
 
 app.use ("/api/products", productRouter)
 app.use("/api/carts", cartsRouter)
+app.use("/", viewstRouter)
 
 app.use (express.json())
-
-app.get('/', (req, res) => {
-    res.render('home');
-});
 
 app.listen (8080, () => {
     console.log ( "Servidor escuchado en el puerto 8080" )
