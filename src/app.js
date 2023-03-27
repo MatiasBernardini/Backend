@@ -1,8 +1,8 @@
 import express from "express"
 import { engine } from 'express-handlebars';
 import __dirname from "./utils.js"
-import ProductManager from "./ProductManager.js";
-import cartManager from "./cart.js"
+import ProductManager from "./dao/file-managers/ProductManager.js";
+import cartManager from "./dao/file-managers/cart.js"
 import productRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/cart.routes.js";
 import viewstRouter from "./routes/views.routes.js";
@@ -16,8 +16,8 @@ app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', __dirname + '/views');
 
-const products = new ProductManager("./Product.json")
-const cartManagerr = new cartManager ("./Cart.json")
+const products = new ProductManager()
+const cartManagerr = new cartManager ()
 
 app.use (express.json())
 

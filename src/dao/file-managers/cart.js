@@ -1,15 +1,16 @@
 import fs from "fs" 
+import __dirname from "../../utils.js"
+
+const path = __dirname + "/dao/file-managers/files/Cart.json";
 
 class cartManager {
-    #path = ""
-
-    constructor (path) {
-        this.#path = path;
+    constructor () {
+        console.log("Working with users using filesystem");
     }
 
     async getCart() {
         try {
-          const carts = await fs.promises.readFile(this.#path, "utf-8");
+          const carts = await fs.promises.readFile(path, "utf-8");
           return JSON.parse(carts);
         } catch (e) {
           return [];
@@ -41,7 +42,7 @@ class cartManager {
 
         const updateCart = [...carts , dataCart];
 
-        await fs.promises.writeFile (this.#path, JSON.stringify(updateCart));
+        await fs.promises.writeFile (path, JSON.stringify(updateCart));
     }
 
     async getCartById (newId){
@@ -76,7 +77,7 @@ class cartManager {
                 ...newCarts,
                 cart
             ]
-            await fs.promises.writeFile(this.#path, JSON.stringify(newCarts))
+            await fs.promises.writeFile(path, JSON.stringify(newCarts))
         } else {
             cart.products = [
                 ...cart.products,
@@ -90,7 +91,7 @@ class cartManager {
                 ...newCarts,
                 cart
             ]
-            await fs.promises.writeFile(this.#path, JSON.stringify(newCarts))
+            await fs.promises.writeFile(path, JSON.stringify(newCarts))
         }
     }
 

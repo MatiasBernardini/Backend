@@ -1,15 +1,17 @@
 import fs from "fs" 
+import __dirname from "../../utils.js"
+
+const path = __dirname + "/dao/file-managers/files/Product.json";
 
 class ProductManager {
-    #path = ""
 
-    constructor (path) {
-        this.#path = path;
+    constructor () {
+        console.log("Working with users using filesystem");
     }
 
     async getProducts() {
         try {
-          const products = await fs.promises.readFile(this.#path, "utf-8");
+          const products = await fs.promises.readFile(path, "utf-8");
           return JSON.parse(products);
         } catch (e) {
           return [];
@@ -59,7 +61,7 @@ class ProductManager {
 
         const updateProduct = [...products , dataProduct];
 
-        await fs.promises.writeFile (this.#path, JSON.stringify(updateProduct));
+        await fs.promises.writeFile (path, JSON.stringify(updateProduct));
     }
 
     async getProductById (newId){
@@ -89,7 +91,7 @@ class ProductManager {
 
         newArray = [...newArray, productoModificado];
 
-        await fs.promises.writeFile(this.#path, JSON.stringify(newArray));
+        await fs.promises.writeFile(path, JSON.stringify(newArray));
 
         console.log('Modificación exitosa')
     }
@@ -100,7 +102,7 @@ class ProductManager {
 
         let eliminarProducto = products.filter(p => p.id !== id);
 
-        await fs.promises.writeFile(this.#path,JSON.stringify(eliminarProducto));
+        await fs.promises.writeFile(path,JSON.stringify(eliminarProducto));
 
         console.log("Producto eliminado de JSON")
     }
