@@ -1,12 +1,15 @@
 import { Router ,json } from "express";
-import {products, cartManagerr} from "../app.js";
+// import {products, cartManagerr} from "../app.js";
+import {productManager, CartManager} from "../dao/index.js"
 
-const cartsRouter = Router()
+const Carts = new CartManager ();
+const productsManager = new productManager ();
+let cartsRouter = Router()
 
 cartsRouter.use(json())
 
 cartsRouter.post("/", async (req,res)=>{
-    const newProductCart = await cartManagerr.addCart()
+    const newProductCart = await Carts.addCart()
 
     res.send(newProductCart)
 })
@@ -14,10 +17,10 @@ cartsRouter.post("/", async (req,res)=>{
 cartsRouter.get("/:cid", async (req, res)=>{
     const {cid} = req.params
 
-    let cart = await cartManagerr.getCartById(parseInt(cid))
+    let cart = await Carts.getCartById(parseInt(cid))
 
     res.send(cart)
-
+ 
 })
 
 cartsRouter.post("/:cid/products/:pid", async (req,res)=>{
@@ -30,13 +33,13 @@ cartsRouter.post("/:cid/products/:pid", async (req,res)=>{
     console.log (productID)
     console.log (cartID)
 
-    let product = await products.getProductById(productID)
+    let product = await productsManager.getProductById(productID)
 
     console.log (product)
 
-    await cartManagerr.addProductToCart(product, cartID)
+    await Carts.addProductToCart(product, cartID)
 
-    res.send(await cartManagerr.getCartById(cartID))
+    res.send(await Carts.getCartById(cartID))
 })
 
 export default cartsRouter

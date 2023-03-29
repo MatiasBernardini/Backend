@@ -1,6 +1,8 @@
 import { Router, json } from "express";
-import {products} from "../app.js";
+// import {products} from "../app.js";
+import {productManager} from "../dao/index.js"
 
+const products = new productManager ();
 const productRouter = Router ();
 
 productRouter.use (json());
@@ -19,14 +21,12 @@ productRouter.get ("/", async (req, res) =>{
 })
 
 productRouter.get ("/:id", async (req, res) =>{
-    const id = await Number(req.params.id);
-
-    const product = await products.getProductById(id);
-
-    res.send(product);
-
-    if (!product){
-        throw new Error ("ID no encontrado")
+    try{
+        const {id} = req.params
+        const product = await manager.getProductById(id)
+        res.send({status: "succes", payload: product})
+    } catch(err) {
+        res.status(404).send({status: "error", error: `${err}`})
     }
 })
 
@@ -42,29 +42,48 @@ productRouter.post ("/addProduct", async (req, res) =>{
     res.send (product); 
 } )
 
-productRouter.put ( "/:id", async (req, res) => {
-    const {id} = req.params
+// productRouter.put ( "/:id", async (req, res) => {
+//     const {id} = req.params
     
-    const idProduct = parseInt(id)
+//     const idProduct = parseInt(id)
 
-    const product = await products.updateProduct(idProduct, req.body)
+//     const product = await products.updateProduct(idProduct, req.body)
 
-    const productEmit = await products.getProducts()
-    req.io.emit("update-Product", productEmit)
+//     const productEmit = await products.getProducts()
+//     req.io.emit("update-Product", productEmit)
 
-    res.send(product)
-} )
+//     res.send(product)
+// } )
+
+    productRouter.put("/:id", async (req, res)=>{
+        try{
+            const {id} = req.params
+            await products.updateProduct(id, req.body)
+
+            const productEmit = await products.getProducts()
+            req.io.emit("update-product", productEmit)
+        
+            res.send({status: "succes", payload: await products.getProductById(id)})
+        }catch(err){
+            res.status(404).send({status: "error", error: `${err}`})
+        }
+    })
 
 
-productRouter.delete ("/:id", async (req, res) => {
-    const id = await Number(req.params.id);
 
-    const product = await products.deleteProduct(id);
 
-    const productEmit = await products.getProducts()
-    req.io.emit("delete-Product", productEmit)
+    productRouter.delete("/:id", async(req, res)=>{
+        try{
+            const {id} = req.params
+            await products.deleteProduct(id)
 
-    res.send(product);
-})
+            const product = await products.getProducts()
+            req.io.emit("delete-product", product)
 
-export default productRouter;
+            res.send({status: "succes", payload: "Producto eliminado"})
+        } catch(err){
+            res.status(404).send({status: "error", error: `${err}`})
+        }
+    })
+
+export default productRouter; 
