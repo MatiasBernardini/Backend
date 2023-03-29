@@ -35,14 +35,14 @@ class dbProductManager {
     }
   }
 
-  async deleteProduct(id, propModify){
+  async deleteProduct(id){
     try{
-        const result = await productsModel.findOneAndUpdate({_id: id}, propModify, {new: true})
+        const result = await productsModel.deleteOne({_id: id})
         return result
     }catch(err){
         throw new Error(err)
     }
-  }
+}
 }
 
 export default dbProductManager; 

@@ -19,8 +19,8 @@ class dbCartManager {
     }
 
     async getCartById(newId) {
-      const cart = await cartModel.findById(newId)
-      return cart
+      const carts = await cartModel.findById(newId)
+      return carts
     }
   
     async addProductToCart(prod, cartID){
@@ -36,17 +36,7 @@ class dbCartManager {
           }
           
           console.log(cart)
-
-  
-          // No pude hacerlo con populate
-
-          // const cart = await cartModel.findById(cartID)
-          // cart.products.push({product: productID})
-          // await cart.save()
-          // await cart.populate("products.product")
-          // console.log(JSON.stringify(cart, null, "\t"))
-
-      }catch(err){
+        }catch(err){
           throw new Error(err)
       }
     }

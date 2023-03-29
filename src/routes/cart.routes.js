@@ -15,31 +15,24 @@ cartsRouter.post("/", async (req,res)=>{
 })
 
 cartsRouter.get("/:cid", async (req, res)=>{
-    const {cid} = req.params
-
-    let cart = await Carts.getCartById(parseInt(cid))
-
-    res.send(cart)
- 
+    try{
+        const {cid} = req.params
+        let cart = await Carts.getCartById(cid)
+        res.send({status: "succes", payload: cart})
+    }catch(err){
+        res.status(404).send({status: "error", error: `${err}`})
+    }
 })
 
 cartsRouter.post("/:cid/products/:pid", async (req,res)=>{
-    const {cid, pid} = req.params
-
-    const productID = parseInt(pid)
-
-    const cartID = parseInt(cid)
-
-    console.log (productID)
-    console.log (cartID)
-
-    let product = await productsManager.getProductById(productID)
-
-    console.log (product)
-
-    await Carts.addProductToCart(product, cartID)
-
-    res.send(await Carts.getCartById(cartID))
+    try{
+        const {cid, pid} = req.params
+        let product = await productsManager.getProductById(pid)
+        await Carts.addProductToCart(product, cid)
+        res.send({status: "succes", payload: await Carts.getCartById(cid)})
+    }catch(err){
+        res.status(404).send({status: "error", error: `${err}`})
+    }
 })
 
 export default cartsRouter
