@@ -5,8 +5,24 @@ class dbProductManager {
     console.log("Working with users using MongoDb");
   }
 
-  async getProducts() {
-    const products = await productsModel.find().lean()
+  async getProducts(limit, page, sortQ, queryKey, queryParam) {
+    let limitIn = limit || 10;
+    let pageIn = page || 1;
+    let sort = sortQ ? { price: sortQ } : false;
+    let queryKeyIn = queryKey;
+    let queryIn = queryParam;
+
+    let options = { limit: limitIn, page: pageIn, sort: sort };
+
+    let querySearch;
+    if (queryKeyIn&&queryIn) {
+      querySearch = {[queryKeyIn]:[queryIn]}
+      options.limit = 5;
+    } else {
+      {};
+    }
+
+    const products = await productsModel.paginate(querySearch, options)
 
     return products
   }

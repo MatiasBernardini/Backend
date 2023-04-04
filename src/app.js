@@ -1,8 +1,6 @@
 import express from "express"
 import { engine } from 'express-handlebars';
 import __dirname from "./utils.js"
-// import ProductManager from "./dao/file-managers/ProductManager.js";
-// import cartManager from "./dao/file-managers/cart.js"
 import productRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/cart.routes.js";
 import viewstRouter from "./routes/views.routes.js";
@@ -16,9 +14,6 @@ app.use(express.static(__dirname + '/../public'))
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', __dirname + '/views');
-
-// const products = new ProductManager()
-// const cartManagerr = new cartManager ()
 
 app.use (express.json())
 
@@ -44,5 +39,3 @@ app.use((req,res,next)=>{
 app.use ("/api/products", productRouter)
 app.use("/api/carts", cartsRouter)
 app.use("/", viewstRouter)
-
-// export {cartManagerr, products}

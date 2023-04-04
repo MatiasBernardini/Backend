@@ -8,14 +8,17 @@ const productRouter = Router ();
 productRouter.use (json());
 
 productRouter.get ("/", async (req, res) =>{
-    const product = await products.getProducts ();
-
     const {limit} = req.query
     
-    if (limit){
-        product.length = limit
-        return res.send(product)
-    }
+    const {page} = req.query
+
+    const {sort} = req.query
+
+    const {queryKey} = req.query
+
+    const {queryParam} = req.query
+
+    const product = await products.getProducts (limit, page, sort, queryKey, queryParam);
 
     res.send (product)
 })
