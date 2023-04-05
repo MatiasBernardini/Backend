@@ -1,4 +1,28 @@
 <div>
+    <h1>Productos:</h1>
+
+    <ul>
+        {{#each product.docs}} 
+            <li>{{this.title }}   ${{this.price}}</li> 
+        {{/each }}
+    </ul>
+
+    
+    <div>
+        {{#if product.hasPrevPage }} {{! si tiene una pagina previa, le muestra el link href}}
+        <a href="/products?page={{product.prevPage}}">Anterior</a>
+        {{/if}}
+
+        <span>Página {{product.page}} de {{product.totalPages}}</span>
+
+        {{#if product.hasNextPage }} {{! si tiene una pagina previa, le muestra el link href}}
+        <a href="/products?page={{product.nextPage}}">Siguiente</a>
+        {{/if}}
+    </div>
+
+</div>
+
+{{!-- <div>
     <div>
         <h1>Productos sin actualizar</h1>
     </div>
@@ -16,4 +40,4 @@
         </ul>
     </div>
 
-</div>
+</div> --}}

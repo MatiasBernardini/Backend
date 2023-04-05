@@ -22,6 +22,15 @@ class dbCartManager {
       const carts = await cartModel.findById(newId)
       return carts
     }
+
+    async getCartProducts(id) {
+      try {
+          const cart = await cartModel.findById(id).populate("products.product").lean()
+          return cart
+      } catch (err) {
+          throw new Error(err)
+      }
+  }
   
     async addProductToCart(prod, cartID){
       const cart = await cartModel.findById(cartID)

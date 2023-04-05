@@ -5,13 +5,6 @@ class dbProductManager {
     console.log("Working with users using MongoDb");
   }
 
-  titleOfProducts(str){
-    const words = str.split("-")
-    const wordsToUpperCase = words.map(w => w[0].toUpperCase() + w.slice(1))
-    const newTitle = wordsToUpperCase.join(" ")
-    return newTitle
-  }
-
   async getProducts(limit, page, sortQ, query) {
     let newLimit = limit || 10;
     let newPage = page || 1;
