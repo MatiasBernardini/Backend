@@ -48,13 +48,17 @@ cartsRouter.put("/:cid", async (req, res)=>{
     }
 })
 
-// cartManagerRouter.put("/:cId/product/:pId", async (req,res) =>{
-//     const cartId = req.params.cId;
-//     const prodId = req.params.pId;
-//     const prodQuanty = req.body.pQ;
-//     const result = await Carts.addProductToCart3(cartId, prodId, prodQuanty);
-//     res.send(result);
-// })
+cartsRouter.put("/:cid/products/:pid", async (req, res) => {
+    try {
+        const { cid, pid } = req.params
+        const { quantity } = req.body
+        await Carts.moreQuantity(cid, pid, quantity)
+
+        res.send({ status: "succes", payload: "Quantity Updated." })
+    } catch (err) {
+        res.status(404).send({ status: "error", error: err.message })
+    }
+})
 
 cartsRouter.delete("/:cid/products/:pid", async (req, res)=>{
     try{

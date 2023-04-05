@@ -37,42 +37,29 @@ class dbCartManager {
       }
     }
 
-    async addArrayToCart (cartId, arr){
-      let test = await this.getCart(cartId);
+    async moreQuantity(cartID, productID, quantity) {
+      const cart = await cartModel.findById(cartID)
+      const product = cart.products.find(elem => elem.product.toString() === productID)
 
-      console.log(test);
+      if (!cart) {
+          throw new Error("No existe carrito con ese id.")
+      }
 
-      let addArr = await cartModel.updateOne(
-        { _id: cartId },
-        { $push: { products: { $each: arr } } }
-      );
-
-      console.log(addArr);
-
-      return addArr;
+      if (product) {
+          product.quantity += quantity
+          await cart.save()
+          await cart.populate("products.product")
+          console.log(JSON.stringify(cart, null, "\t"))
+      } else {
+          cart.products.push({ product: productID })
+          await cart.save()
+          const newProduct = cart.products.find(elem => elem.product.toString() === productID)
+          newProduct.quantity = quantity
+          await cart.save()
+          await cart.populate("products.product")
+          console.log(JSON.stringify(cart, null, "\t"))
+      }
     }
-
-    // async addProductToCart3(cartId, productId, quanty) {
-    //   try {
-    //     const findProduct = await cartModel
-    //       .findById(cartId)
-    //       .populate("products.product");
-  
-    //     const existingProductIndex = findProduct.products.findIndex(
-    //       (p) => p.product._id.toString() === productId
-    //     );
-    //     let quantyToAdd = quanty ? quanty : 1;
-    //     if (existingProductIndex !== -1) {
-    //       findProduct.products[existingProductIndex].quantity += Number(quantyToAdd);
-    //     } else {
-    //       findProduct.products.push({ product: productId, quantity: quantyToAdd });
-    //     }
-  
-    //     return await findProduct.save();
-    //   } catch (err) {
-    //     throw new Error(err);
-    //   }
-    // }
 
     async deleteProductInCart(cid, pid){
       let prodDeleted = await cartModel.updateOne(
