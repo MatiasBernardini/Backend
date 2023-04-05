@@ -5,24 +5,37 @@ class dbProductManager {
     console.log("Working with users using MongoDb");
   }
 
-  async getProducts(limit, page, sortQ, queryKey, queryParam) {
+  titleOfProducts(str){
+    const words = str.split("-")
+    const wordsToUpperCase = words.map(w => w[0].toUpperCase() + w.slice(1))
+    const newTitle = wordsToUpperCase.join(" ")
+    return newTitle
+  }
+
+  async getProducts(limit, page, sortQ, query) {
     let newLimit = limit || 10;
     let newPage = page || 1;
     let sort = sortQ ? { price: sortQ } : false;
-    let queryKeyIn = queryKey;
-    let queryIn = queryParam;
 
     let paginate = { limit: newLimit, page: newPage, sort: sort };
-
-    let querySearch;
-    if (queryKeyIn&&queryIn) {
-      querySearch = {[queryKeyIn]:[queryIn]}
-      paginate.limit = 5;
+ 
+    let newQuery
+    if (query.title && query.stock){
+        let newTitle = this.titleOfProducts(query.title)
+        newQuery = {
+            title: newTitle,
+            stock: query.stock
+        }
+    } else if (query.title && !query.stock){
+        let newTitle = this.titleOfProducts(query.title)
+        newQuery = {title: newTitle}
+    } else if (!query.title && query.stock){
+        newQuery = {stock: query.stock}
     } else {
-      {};
+        newQuery = {}
     }
 
-    const products = await productsModel.paginate(querySearch, paginate)
+    const products = await productsModel.paginate(newQuery, paginate)
 
     return products
   }
