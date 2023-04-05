@@ -20,16 +20,11 @@ class dbProductManager {
     let paginate = { limit: newLimit, page: newPage, sort: sort };
  
     let newQuery
-    if (query.title && query.stock){
-        let newTitle = this.titleOfProducts(query.title)
+    if (query.stock){
         newQuery = {
-            title: newTitle,
             stock: query.stock
         }
-    } else if (query.title && !query.stock){
-        let newTitle = this.titleOfProducts(query.title)
-        newQuery = {title: newTitle}
-    } else if (!query.title && query.stock){
+    } else if (query.stock){
         newQuery = {stock: query.stock}
     } else {
         newQuery = {}

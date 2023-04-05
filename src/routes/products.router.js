@@ -14,11 +14,9 @@ productRouter.get ("/", async (req, res) =>{
 
     const {sort} = req.query
 
-    const {title} = req.query
-
     const {stock} = req.query
 
-    const query = {title, stock}
+    const query = {stock}
 
     const product = await products.getProducts (limit, page, sort, query);
 
