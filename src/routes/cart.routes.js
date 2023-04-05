@@ -35,4 +35,49 @@ cartsRouter.post("/:cid/products/:pid", async (req,res)=>{
     }
 })
 
+cartsRouter.put("/:cid", async (req, res)=>{
+    try{
+        const {cid} = req.params
+        const arr = req.body;
+
+        const result = await Carts.addArrayToCart(cid, arr);
+
+        res.send({status: "succes", payload: result})
+    }catch(err){
+        res.status(404).send({status: 'error', error: `${err}`})
+    }
+})
+
+// cartManagerRouter.put("/:cId/product/:pId", async (req,res) =>{
+//     const cartId = req.params.cId;
+//     const prodId = req.params.pId;
+//     const prodQuanty = req.body.pQ;
+//     const result = await Carts.addProductToCart3(cartId, prodId, prodQuanty);
+//     res.send(result);
+// })
+
+cartsRouter.delete("/:cid/products/:pid", async (req, res)=>{
+    try{
+        const{cid} = req.params;
+        const {pid} = req.params;
+        const prodToDel = await Carts.deleteProductInCart(cid,pid);
+
+        res.send({status: "succes", payload: prodToDel})
+    }catch(err){
+        res.status(404).send({status: 'error', error: `${err}`})
+    }
+ 
+})
+
+cartsRouter.delete("/:cid", async (req, res)=>{
+    try{
+        const {cid} = req.params
+        await Carts.removingAllProductsFromCart(cid)
+        res.send({status: "succes", payload: "Todos los Productos eliminados."})
+    }catch(err){
+        res.status(404).send({status: 'error', error: `${err}`})
+    }
+ 
+})
+
 export default cartsRouter

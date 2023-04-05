@@ -37,11 +37,58 @@ class dbCartManager {
       }
     }
 
-    // async deleteProductInCart (prod, cartId){
-    //   const cart = await cartModel.findById(cartId)
+    async addArrayToCart (cartId, arr){
+      let test = await this.getCart(cartId);
 
-    //   const cartDelete = cart.
+      console.log(test);
+
+      let addArr = await cartModel.updateOne(
+        { _id: cartId },
+        { $push: { products: { $each: arr } } }
+      );
+
+      console.log(addArr);
+
+      return addArr;
+    }
+
+    // async addProductToCart3(cartId, productId, quanty) {
+    //   try {
+    //     const findProduct = await cartModel
+    //       .findById(cartId)
+    //       .populate("products.product");
+  
+    //     const existingProductIndex = findProduct.products.findIndex(
+    //       (p) => p.product._id.toString() === productId
+    //     );
+    //     let quantyToAdd = quanty ? quanty : 1;
+    //     if (existingProductIndex !== -1) {
+    //       findProduct.products[existingProductIndex].quantity += Number(quantyToAdd);
+    //     } else {
+    //       findProduct.products.push({ product: productId, quantity: quantyToAdd });
+    //     }
+  
+    //     return await findProduct.save();
+    //   } catch (err) {
+    //     throw new Error(err);
+    //   }
     // }
+
+    async deleteProductInCart(cid, pid){
+      let prodDeleted = await cartModel.updateOne(
+        { _id: cid },
+        { $pull: { products: { product: pid } } }
+      );
+      return prodDeleted;
+    }
+
+    async removingAllProductsFromCart (cartId){
+      const cart = await cartModel.updateOne(
+        { _id: cartId },
+        { $pull: { products: {} } }
+      );
+      return cart;
+    }
 
 }
 

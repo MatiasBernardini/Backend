@@ -6,23 +6,23 @@ class dbProductManager {
   }
 
   async getProducts(limit, page, sortQ, queryKey, queryParam) {
-    let limitIn = limit || 10;
-    let pageIn = page || 1;
+    let newLimit = limit || 10;
+    let newPage = page || 1;
     let sort = sortQ ? { price: sortQ } : false;
     let queryKeyIn = queryKey;
     let queryIn = queryParam;
 
-    let options = { limit: limitIn, page: pageIn, sort: sort };
+    let paginate = { limit: newLimit, page: newPage, sort: sort };
 
     let querySearch;
     if (queryKeyIn&&queryIn) {
       querySearch = {[queryKeyIn]:[queryIn]}
-      options.limit = 5;
+      paginate.limit = 5;
     } else {
       {};
     }
 
-    const products = await productsModel.paginate(querySearch, options)
+    const products = await productsModel.paginate(querySearch, paginate)
 
     return products
   }
