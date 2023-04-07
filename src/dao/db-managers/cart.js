@@ -30,7 +30,7 @@ class dbCartManager {
       } catch (err) {
           throw new Error(err)
       }
-  }
+    }
   
     async addProductToCart(prod, cartID){
       const cart = await cartModel.findById(cartID)
