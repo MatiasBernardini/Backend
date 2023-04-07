@@ -1,22 +1,24 @@
 <div>
-    <h1>Productos:</h1>
+    <h1>Productos:</h1> 
 
     <ul>
-        {{#each product.docs}} 
-            <li>{{this.title }}   ${{this.price}}</li> 
-        {{/each }}
+        {{#each product.docs}}
+        <li>
+            <p><b>{{this.title}}</b></p>
+            <p>Precio: ${{this.price}}</p>
+            <p>Stock: {{this.stock}}</p>
+        </li>
+        <br> <br> <br>
+        {{/each}}
     </ul>
 
-    
     <div>
-        {{#if product.hasPrevPage }} {{! si tiene una pagina previa, le muestra el link href}}
-        <a href="/products?page={{product.prevPage}}">Anterior</a>
+        {{#if product.hasPrevPage}}
+        <a href="/?page={{product.prevPage}}">Anterior</a>
         {{/if}}
-
         <span>Página {{product.page}} de {{product.totalPages}}</span>
-
-        {{#if product.hasNextPage }} {{! si tiene una pagina previa, le muestra el link href}}
-        <a href="/products?page={{product.nextPage}}">Siguiente</a>
+        {{#if product.hasNextPage}}
+        <a href="/?page={{product.nextPage}}">Siguiente</a>
         {{/if}}
     </div>
 

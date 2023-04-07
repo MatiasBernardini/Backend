@@ -18,7 +18,7 @@ productRouter.get ("/", async (req, res) =>{
 
     const query = {stock}
 
-    const product = await products.getProducts (limit, page, sort, query);
+    const product = await products.getProducts(limit, page, sort, query);
 
     res.send (product)
 })

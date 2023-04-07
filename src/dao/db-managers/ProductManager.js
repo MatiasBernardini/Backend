@@ -28,7 +28,15 @@ class dbProductManager {
     return products
   }
 
-  async addProduct ( product ){
+  async addProduct ( title, description, price, code, stock, ){
+    const product = {
+      title,
+      description,
+      price,
+      code,
+      stock
+    } 
+
     const products = await productsModel.create(product)
 
     return products
