@@ -8,6 +8,29 @@ const viewstRouter = Router ();
 viewstRouter.use (json());
 
 viewstRouter.get("/", async (req, res) => {
+    res.render ("home")
+})
+
+viewstRouter.get("/login", async (req, res) => {
+    res.render ("login")
+})
+
+viewstRouter.get("/signup", async (req, res) => {
+    res.render ("signup")
+})
+
+viewstRouter.get("/profile", async (req, res) => {
+    const userInfo = req.session;
+
+    // const welcomeUser = user;
+ 
+    // console.log(user);
+    // console.log(userInfo);
+
+    res.render ("profile", {userInfo})
+})
+
+viewstRouter.get("/products", async (req, res) => {
     const { page, limit, sort, stock } = req.query
     const query = {stock}
     const product = await products.getProducts(page, limit, sort, query)
@@ -31,7 +54,7 @@ viewstRouter.get("/", async (req, res) => {
         nextPage: product.nextPage,
     }
 
-    res.render("home", data )
+    res.render("products", data )
 })
 
 // viewstRouter.get("/real_time_products", async (req,res)=>{

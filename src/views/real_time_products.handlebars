@@ -5,12 +5,12 @@
 
     <div>
         <ul id="updatedProductList">
-            {{#each product}}
+            {{#each products}}
                 <li>
-                    <p>Title: {{title}}</p>
-                    <p>Price: ${{price}}</p>
-                    <p>Description: {{description}}</p>
-                    <p>Stock: {{stock}}</p>
+                    <p>Title: {{this.title}}</p>
+                    <p>Price: ${{this.price}}</p>
+                    <p>Description: {{this.description}}</p>
+                    <p>Stock: {{this.stock}}</p>
                 </li>
                 {{/each}}
         </ul>
