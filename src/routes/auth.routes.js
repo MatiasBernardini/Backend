@@ -1,5 +1,6 @@
 import {Router} from "express";
 import userModel from "../dao/models/user.model.js";
+import { createHash, isValidPassword } from "../utils.js";
 
 const authRouter = Router ()
 
@@ -10,9 +11,14 @@ authRouter.post("/signup",async(req,res)=>{
 
         if(!user){
             //si no existe el usuario lo registramos
-            const newUser = await userModel.create({email, password});
+            const newUser ={
+                email,
+                password:createHash(password)
+            }
 
-            req.session.user=newUser.email;
+            const userCreated = await userModel.create(newUser);
+
+            req.session.user=userCreated.email; 
 
             req.session.rol = "user";
 
@@ -33,12 +39,9 @@ authRouter.post("/signup",async(req,res)=>{
 
 authRouter.post ("/login", async (req, res) =>{
     const {email, password} = req.body;
-    const loginUser = await userModel.findOne({email:email, password: password})
+    const loginUser = await userModel.findOne({email:email })
 
-    if (!loginUser) {
-        res.send(`Usuario no existente, debera registrarse <a href="/signup">Toque aquí</a>`);
-
-    } else {
+    if (loginUser) {
         if (
             loginUser.email === "adminCoder@coder.com" &&
             loginUser.password === "adminCod3r123"
@@ -49,14 +52,17 @@ authRouter.post ("/login", async (req, res) =>{
 
           return res.redirect("/profile");
           
-        } else {
+        } if(isValidPassword(loginUser, password)) {
           req.session.user = loginUser.email;
           req.session.rol = "user";
 
           return res.redirect("/profile");
+        } else{
+            res.send(`Error en inicio de sesion, vuelva a intentar `);
         }
     
     }
+    res.send(`Usuario no registrado, <a href="/signup">registrarse</a>`);
 
 })
 
