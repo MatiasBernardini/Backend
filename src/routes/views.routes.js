@@ -20,12 +20,9 @@ viewstRouter.get("/signup", async (req, res) => {
 })
 
 viewstRouter.get("/profile", async (req, res) => {
-    const userInfo = req.session;
+    const userInfo = req.user;
 
-    // const welcomeUser = user;
- 
-    // console.log(user);
-    // console.log(userInfo);
+    console.log (userInfo)
 
     res.render ("profile", {userInfo})
 })

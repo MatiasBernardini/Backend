@@ -5,6 +5,8 @@ import { Server } from "socket.io";
 import mongoose from 'mongoose';
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import passport from "passport";
+import { initializedPassport } from "./config/passport.config.js";
 
 import productRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/cart.routes.js";
@@ -36,6 +38,10 @@ app.use (session({
     resave: true,
     saveUninitialized: true
 }))
+
+initializedPassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 const httpServer = app.listen (8080, () => {
     console.log ( "Servidor escuchado en el puerto 8080" )
