@@ -62,6 +62,16 @@ authRouter.get("/github-callback",passport.authenticate("githubSignup",{
 
 /*---------------------------------LOGIN-----------------------------------------------*/
 
+// authRouter.post("/login",passport.authenticate("loginStrategy",{
+//   failureRedirect:"/api/sessions/failure-login"
+// }),(req,res)=>{
+//   return res.redirect("/profile");
+// });
+
+// authRouter.get("/failure-login",(req,res)=>{
+//   res.send("No fue posible iniciar sesion");
+// });
+
 authRouter.post ("/login", async (req, res) =>{
     const {email, password} = req.body;
     const loginUser = await userModel.findOne({email:email })

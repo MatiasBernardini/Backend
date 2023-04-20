@@ -17,11 +17,20 @@ const initializedPassport = ()=>{
                 if(user){
                     return done(null,false)
                 }
-                //si no existe en la db
+
+                let rol = "user";
+                if (
+                    username === "adminCoder@coder.com" &&
+                    password === "adminCod3r123"
+                  ) {
+                    rol = "admin";
+                }
+
                 const newUser ={
                     name,
                     email:username,
-                    password:createHash(password)
+                    password:createHash(password),
+                    rol
                 };
                 const userCreated = await userModel.create(newUser);
                 return done(null,userCreated);
@@ -63,6 +72,28 @@ const initializedPassport = ()=>{
             }
         }
     ))
+
+    /*-------------------------------------*/
+
+    // passport.use("loginStrategy",new LocalStrategy(
+    //     {
+    //         usernameField:"email",
+    //     },
+    //     async( username, password, done)=>{
+    //         try {
+    //             const user = await userModel.findOne({email:username});
+    //             if(!user){
+    //                 return done(null,false)
+    //             }
+
+    //             if (!isValidPassword (password, user)) return done (null, false);
+    //             return done (null, user);
+
+    //         } catch (error) {
+    //             return done(error);
+    //         }
+    //     }
+    // ));
 
     /*-------------------------------------*/
     passport.serializeUser((user,done)=>{
