@@ -75,36 +75,35 @@ const initializedPassport = ()=>{
 
     /*-------------------------------------*/
 
-    // passport.use("loginStrategy",new LocalStrategy(
-    //     {
-    //         usernameField:"email",
-    //     },
-    //     async( username, password, done)=>{
-    //         try {
-    //             const user = await userModel.findOne({email:username});
-    //             if(!user){
-    //                 return done(null,false)
-    //             }
+    passport.use("loginStrategy",new LocalStrategy(
+        {
+            usernameField:"email",
+        },
+        async( username, password, done)=>{
+            try {
+                const user = await userModel.findOne({email:username});
+                if(!user){
+                    return done(null,false)
+                }
 
-    //             if (!isValidPassword (password, user)) return done (null, false);
-    //             return done (null, user);
+                if (!isValidPassword (user, password)) return done (null, false);
+                return done (null, user);
 
-    //         } catch (error) {
-    //             return done(error);
-    //         }
-    //     }
-    // ));
+            } catch (error) {
+                return done(error);
+            }
+        }
+    ));
 
     /*-------------------------------------*/
-    passport.serializeUser((user,done)=>{
-        done(null,user._id);
-    });
-
-    passport.deserializeUser(async(id,done)=>{
+    passport.serializeUser((user, done) => {
+        done(null, user._id);
+      });
+    
+      passport.deserializeUser(async (id, done) => {
         const user = await userModel.findById(id);
-        
         return done(null, user);
-    });
+      });
 
 }
 
