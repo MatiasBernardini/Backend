@@ -10,10 +10,10 @@ const initializedPassport = ()=>{
             usernameField:"email",
             passReqToCallback:true
         },
-        async(req,username, password, done)=>{
+        async(req, username, password, done)=>{
             try {
-                const {name} = req.body;
-                const user = await userModel.findOne({email:username});
+                const {first_name, last_name, age } = req.body;
+                const user = await userModel.findOne({email: username});
                 if(user){
                     return done(null,false)
                 }
@@ -24,14 +24,17 @@ const initializedPassport = ()=>{
                     password === "adminCod3r123"
                   ) {
                     rol = "admin";
-                }
+                } 
 
                 const newUser ={
-                    name,
+                    first_name,
+                    last_name, 
                     email:username,
+                    age,
                     password:createHash(password),
                     rol
                 };
+                console.log (newUser)
                 const userCreated = await userModel.create(newUser);
                 return done(null,userCreated);
             } catch (error) {

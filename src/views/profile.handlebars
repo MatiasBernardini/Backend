@@ -1,6 +1,17 @@
 <h1>pagina perfil</h1>
 
-<h2>Sea bienvenido "{{userInfo.email}}", su rol en la nuestra pagina es de "{{userInfo.rol}}"</h2>
+<h2>Sea bienvenido "{{userInfo.userFirst_name}}"</h2>
+<h3>A continuación podrá ver las caracteristicas de su perfil:</h3>
+ 
+<div>
+    <ul> 
+        <li>Nombre: "{{userInfo.userFirst_name}}"</li>
+        <li>Apellido: "{{userInfo.userLast_name}}"</li>
+        <li>Edad: "{{userInfo.userAge}}"</li>
+        <li>Email: "{{userInfo.userEmail}}"</li>
+        <li>Rol: "{{userInfo.userRol}}"</li>
+    </ul>
+</div>
 
 
 <div>
