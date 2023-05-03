@@ -20,19 +20,23 @@ viewstRouter.get("/signup", async (req, res) => {
 })
 
 viewstRouter.get("/profile", async (req, res) => {
-    const {first_name, last_name, age, email, rol} = req.user
+    if (!req.user){
+        res.send (`Tiene que iniciar sesion, para ver su perfil <a href="/login">Incia sesion</a>`)
+    } else {
+        const {first_name, last_name, age, email, rol} = req.user
 
-    const userInfo = {
-        userFirst_name : first_name,
-        userLast_name : last_name,
-        userAge : age,
-        userEmail : email,
-        userRol : rol
+        const userInfo = {
+            userFirst_name : first_name,
+            userLast_name : last_name,
+            userAge : age,
+            userEmail : email,
+            userRol : rol
+        }
+
+        res.render ("profile", {userInfo})
     }
 
     console.log (req.user)
-
-    res.render ("profile", {userInfo})
 })
 
 viewstRouter.get("/products", async (req, res) => {
