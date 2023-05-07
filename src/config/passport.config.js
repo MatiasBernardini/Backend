@@ -1,11 +1,15 @@
 import passport from "passport";
 import LocalStrategy from "passport-local";
 import userModel from "../dao/models/user.model.js";
+import { options } from "./config.js";
 import GithubStrategy from "passport-github2";
 import { createHash, isValidPassword } from "../utils.js";
 import dbCartManager from "../dao/db-managers/cart.js";
 
 const cartInUser = new dbCartManager();
+
+const adminCount = options.auth.account
+const adminPassword = options.auth.pass
 
 const initializedPassport = ()=>{
     passport.use("signupStrategy",new LocalStrategy(
@@ -23,8 +27,8 @@ const initializedPassport = ()=>{
 
                 let rol = "user";
                 if (
-                    username === "adminCoder@coder.com" &&
-                    password === "adminCod3r123"
+                    username === adminCount &&
+                    password === adminPassword
                   ) {
                     rol = "admin";
                 } 

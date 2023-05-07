@@ -1,5 +1,6 @@
 import express from "express"
 import { engine } from 'express-handlebars';
+import { options } from "./config/config.js";
 import __dirname from "./utils.js"
 import { Server } from "socket.io";
 import mongoose from 'mongoose';
@@ -17,6 +18,9 @@ import authRouter from "./routes/auth.routes.js";
 
 const app = express()
 
+const port = options.server.port;
+const mongoUrlSecret = options.mongo.url
+
 app.use (express.json())
 app.use(express.urlencoded({extended:true}));
 
@@ -26,13 +30,13 @@ app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', __dirname + '/views');
 
-mongoose.connect("mongodb+srv://backend:backend123@proyectobackend.jitxkya.mongodb.net/proyecto-backend?retryWrites=true&w=majority").then((conn) => {
+mongoose.connect(mongoUrlSecret).then((conn) => {
     console.log("Connected to DB!");
-});
+});  
 
 app.use (session({
     store: MongoStore.create({
-        mongoUrl: "mongodb+srv://backend:backend123@proyectobackend.jitxkya.mongodb.net/proyecto-backend?retryWrites=true&w=majority",
+        mongoUrl: mongoUrlSecret,
     }),
     secret: "claveSecreta",
     resave: true,
@@ -43,8 +47,8 @@ initializedPassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
-const httpServer = app.listen (8080, () => {
-    console.log ( "Servidor escuchado en el puerto 8080" )
+const httpServer = app.listen (port, () => {
+    console.log ( `Server listening on port ${port}` )
 })
 
 const io = new Server (httpServer)
