@@ -1,87 +1,21 @@
 import { Router ,json } from "express";
-// import {products, cartManagerr} from "../app.js";
-import {productManager, CartManager} from "../dao/index.js"
+import { cartController } from "../controller/carts.controller.js";
 
-const Carts = new CartManager ();
-const productsManager = new productManager ();
 let cartsRouter = Router()
-
 cartsRouter.use(json())
 
-cartsRouter.post("/", async (req,res)=>{
-    const newProductCart = await Carts.addCart()
+cartsRouter.post("/", cartController.add_Cart)
 
-    res.send(newProductCart)
-})
+cartsRouter.get("/:cid", cartController.get_Cart)
 
-cartsRouter.get("/:cid", async (req, res)=>{
-    try{
-        const {cid} = req.params
-        let cart = await Carts.getCartById(cid)
-        res.send({status: "succes", payload: cart})
-    }catch(err){
-        res.status(404).send({status: "error", error: `${err}`})
-    }
-})
+cartsRouter.post("/:cid/products/:pid", cartController.add_ProductInCart)
 
-cartsRouter.post("/:cid/products/:pid", async (req,res)=>{
-    try{
-        const {cid, pid} = req.params
-        let product = await productsManager.getProductById(pid)
-        await Carts.addProductToCart(product, cid)
-        res.send({status: "succes", payload: await Carts.getCartById(cid)})
-    }catch(err){
-        res.status(404).send({status: "error", error: `${err}`})
-    }
-})
+cartsRouter.put("/:cid", cartController.add_ArrayToCart)
 
-cartsRouter.put("/:cid", async (req, res)=>{
-    try{
-        const {cid} = req.params
-        const arr = req.body;
+cartsRouter.put("/:cid/products/:pid", cartController.put_QuantityUpdated)
 
-        const result = await Carts.addArrayToCart(cid, arr);
+cartsRouter.delete("/:cid/products/:pid", cartController.delete_ProductInCart)
 
-        res.send({status: "succes", payload: result})
-    }catch(err){
-        res.status(404).send({status: 'error', error: `${err}`})
-    }
-})
-
-cartsRouter.put("/:cid/products/:pid", async (req, res) => {
-    try {
-        const { cid, pid } = req.params
-        const { quantity } = req.body
-        await Carts.moreQuantity(cid, pid, quantity)
-
-        res.send({ status: "succes", payload: "Quantity Updated." })
-    } catch (err) {
-        res.status(404).send({ status: "error", error: err.message })
-    }
-})
-
-cartsRouter.delete("/:cid/products/:pid", async (req, res)=>{
-    try{
-        const{cid} = req.params;
-        const {pid} = req.params;
-        const prodToDel = await Carts.deleteProductInCart(cid,pid);
-
-        res.send({status: "succes", payload: prodToDel})
-    }catch(err){
-        res.status(404).send({status: 'error', error: `${err}`})
-    }
- 
-})
-
-cartsRouter.delete("/:cid", async (req, res)=>{
-    try{
-        const {cid} = req.params
-        await Carts.removingAllProductsFromCart(cid)
-        res.send({status: "succes", payload: "Todos los Productos eliminados."})
-    }catch(err){
-        res.status(404).send({status: 'error', error: `${err}`})
-    }
- 
-})
+cartsRouter.delete("/:cid", cartController.delet_AllProductsInCart)
 
 export default cartsRouter

@@ -28,19 +28,24 @@ class dbProductManager {
     return products
   }
 
-  async addProduct ( title, description, price, code, stock, ){
-    const product = {
-      title,
-      description,
-      price,
-      code,
-      stock
-    } 
+  async addProduct (title, description, price, thumbail, code, stock) {
+    code = Math.floor(Math.random() * 100000000000)
 
-    const products = await productsModel.create(product)
-
-    return products
-  }
+    try {
+        const product = {
+            title,
+            description,
+            price,
+            thumbail,
+            code,
+            stock
+        }
+        const result = await productsModel.create(product)
+        return result
+    } catch (err) {
+        throw new Error(err.message)
+    }
+  }  
 
   async getProductById(id){
     try{
