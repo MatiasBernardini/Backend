@@ -31,9 +31,9 @@ class productsController {
 
     static add_Product = async (req, res) => {
         try {
-            const { title, description, price, thumbail, code, stock} = req.body
+            const { title, description, price, code, stock} = req.body
 
-            await products.addProduct(title, description, parseInt(price), thumbail, code, parseInt(stock))
+            await products.addProduct(title, description, parseInt(price), code, parseInt(stock))
 
             req.io.emit("added-Product", req.body)
 
@@ -44,7 +44,6 @@ class productsController {
     }
 
     static update_Product = async (req, res) => {
-        try{
             const {id} = req.params
             await products.updateProduct(id, req.body)
     
@@ -52,9 +51,6 @@ class productsController {
             req.io.emit("update-product", productEmit)
         
             res.send({status: "succes", payload: await products.getProductById(id)})
-        }catch(err){
-            res.status(404).send({status: "error", error: `${err}`})
-        }
     }
 
     static delete_Product = async (req, res) => {

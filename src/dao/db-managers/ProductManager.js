@@ -13,22 +13,22 @@ class dbProductManager {
     let paginate = { limit: newLimit, page: newPage, sort: sort };
  
     let newQuery
-    if (query.stock){
-        newQuery = {
-            stock: query.stock
-        }
-    } else if (query.stock){
-        newQuery = {stock: query.stock}
-    } else {
-        newQuery = {}
-    }
+    // if (query.stock){
+    //     newQuery = {
+    //         stock: query.stock
+    //     }
+    // } else if (query.stock){
+    //     newQuery = {stock: query.stock}
+    // } else {
+    //     newQuery = {}
+    // }   FIJARSE QUE ESTO ME ESTA DANDO ERROR AL ACTUALIZAR Y BORRAR PRODUCTOS
 
     const products = await productsModel.paginate(newQuery, paginate)
 
     return products
   }
 
-  async addProduct (title, description, price, thumbail, code, stock) {
+  async addProduct (title, description, price, code, stock) {
     code = Math.floor(Math.random() * 100000000000)
 
     try {
@@ -36,14 +36,13 @@ class dbProductManager {
             title,
             description,
             price,
-            thumbail,
             code,
             stock
         }
         const result = await productsModel.create(product)
         return result
     } catch (err) {
-        throw new Error(err.message)
+        throw new Error(err.message)  
     }
   }  
 
