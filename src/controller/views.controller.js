@@ -1,4 +1,5 @@
 import {productManager, CartManager} from "../dao/index.js"
+import { GetUserDto } from "../dao/dto/user.dto.js";
 
 const products = new productManager ();
 const Carts = new CartManager ();
@@ -17,15 +18,14 @@ class viewsController {
     }
 
     static get_Profile = async (req, res) => {
-        console.log (req.user)
         if (!req.user){
             res.send (`Tiene que iniciar sesion, para ver su perfil <a href="/login">Incia sesion</a>`)
         } else {
-            const {first_name, last_name, age, email, rol, cart} = req.user
+            let userDto = new GetUserDto (req.user);
+            const {full_Name, age, email, rol, cart} = userDto
     
             const userInfo = {
-                userFirst_name : first_name,
-                userLast_name : last_name,
+                userFullName : full_Name,
                 userAge : age,
                 userEmail : email,
                 userRol : rol,
@@ -33,9 +33,9 @@ class viewsController {
             }
     
             res.render ("profile", {userInfo})
+
+            console.log (userDto)
         }
-    
-        console.log (req.user)
     }
 
     static get_Products = async (req, res) => {

@@ -1,6 +1,7 @@
 import passport from "passport";
 import LocalStrategy from "passport-local";
 import userModel from "../dao/models/user.model.js";
+import { CreateUserDto, GetUserDto } from "../dao/dto/user.dto.js"
 import { options } from "./config.js";
 import GithubStrategy from "passport-github2";
 import { createHash, isValidPassword } from "../utils.js";
@@ -19,7 +20,8 @@ const initializedPassport = ()=>{
         },
         async(req, username, password, done)=>{
             try {
-                const {first_name, last_name, age } = req.body;
+                const userDto = new CreateUserDto (req.body);
+                const {first_name, last_name, full_Name ,age } = userDto;
                 const user = await userModel.findOne({email: username});
                 if(user){
                     return done(null,false)
@@ -35,7 +37,8 @@ const initializedPassport = ()=>{
 
                 const newUser ={
                     first_name,
-                    last_name, 
+                    last_name,
+                    full_Name,
                     email:username,
                     age,
                     password:createHash(password),
