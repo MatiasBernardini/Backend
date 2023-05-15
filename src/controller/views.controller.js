@@ -1,8 +1,5 @@
-import {productManager, CartManager} from "../dao/index.js"
+import {productManager, CartManager} from "../dao/factory.js"
 import { GetUserDto } from "../dao/dto/user.dto.js";
-
-const products = new productManager ();
-const Carts = new CartManager ();
 
 class viewsController {
     static get_Home = async (req, res) => {
@@ -41,7 +38,7 @@ class viewsController {
     static get_Products = async (req, res) => {
         const { page, limit, sort, stock } = req.query
         const query = {stock}
-        const product = await products.getProducts(page, limit, sort, query)
+        const product = await productManager.getProducts(page, limit, sort, query)
     
         const data = {
             products: product.docs.map ((p) => ({
@@ -68,7 +65,7 @@ class viewsController {
     static get_Cart_Id = async (req, res) => {
         const {cid} = req.params
 
-        const cart = await Carts.getCartProducts(cid)
+        const cart = await CartManager.getCartProducts(cid)
     
         const cartProducts = cart.products
     

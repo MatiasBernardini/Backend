@@ -74,4 +74,4 @@ class dbProductManager {
 }
 }
 
-export default dbProductManager; 
+export  {dbProductManager}; 

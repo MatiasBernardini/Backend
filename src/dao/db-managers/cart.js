@@ -88,4 +88,4 @@ class dbCartManager {
 
 }
 
-export default dbCartManager
+export {dbCartManager}

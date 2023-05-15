@@ -30,9 +30,9 @@ app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', __dirname + '/views');
 
-mongoose.connect(mongoUrlSecret).then((conn) => {
-    console.log("Connected to DB!");
-});  
+
+const httpServer = app.listen(port,()=>console.log(`Server listening on port ${port}`));
+
 
 app.use (session({
     store: MongoStore.create({
@@ -47,9 +47,7 @@ initializedPassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
-const httpServer = app.listen (port, () => {
-    console.log ( `Server listening on port ${port}` )
-})
+
 
 const io = new Server (httpServer)
 

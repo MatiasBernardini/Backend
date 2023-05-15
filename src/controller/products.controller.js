@@ -1,6 +1,4 @@
-import {productManager} from "../dao/index.js"
-
-const products = new productManager ();
+import {productManager} from "../dao/factory.js"
 
 class productsController {
     static get_Products = async (req, res) => {
@@ -14,7 +12,7 @@ class productsController {
     
         const query = {stock}
     
-        const product = await products.getProducts(limit, page, sort, query);
+        const product = await productManager.getProducts(limit, page, sort, query);
     
         res.send (product)
     } 
@@ -22,7 +20,7 @@ class productsController {
     static get_Product_Id = async (req,res) => {
         try{
             const {id} = req.params
-            const product = await products.getProductById(id)
+            const product = await productManager.getProductById(id)
             res.send({status: "succes", payload: product})
         } catch(err) {
             res.status(404).send({status: "error", error: `${err}`})
@@ -33,7 +31,7 @@ class productsController {
         try {
             const { title, description, price, code, stock} = req.body
 
-            await products.addProduct(title, description, parseInt(price), code, parseInt(stock))
+            await productManager.addProduct(title, description, parseInt(price), code, parseInt(stock))
 
             req.io.emit("added-Product", req.body)
 
@@ -45,20 +43,20 @@ class productsController {
 
     static update_Product = async (req, res) => {
             const {id} = req.params
-            await products.updateProduct(id, req.body)
+            await productManager.updateProduct(id, req.body)
     
-            const productEmit = await products.getProducts()
+            const productEmit = await productManager.getProducts()
             req.io.emit("update-product", productEmit)
         
-            res.send({status: "succes", payload: await products.getProductById(id)})
+            res.send({status: "succes", payload: await productManager.getProductById(id)})
     }
 
     static delete_Product = async (req, res) => {
         try{
             const {id} = req.params
-            await products.deleteProduct(id)
+            await productManager.deleteProduct(id)
     
-            const product = await products.getProducts()
+            const product = await productManager.getProducts()
             req.io.emit("delete-product", product)
     
             res.send({status: "succes", payload: "Producto eliminado"})

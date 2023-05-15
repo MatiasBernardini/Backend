@@ -5,7 +5,7 @@ import { CreateUserDto, GetUserDto } from "../dao/dto/user.dto.js"
 import { options } from "./config.js";
 import GithubStrategy from "passport-github2";
 import { createHash, isValidPassword } from "../utils.js";
-import dbCartManager from "../dao/db-managers/cart.js";
+import {dbCartManager} from "../dao/db-managers/cart.js";
 
 const cartInUser = new dbCartManager();
 
