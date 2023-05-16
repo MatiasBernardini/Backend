@@ -1,4 +1,4 @@
-import { productsRepository } from "./products.repository.js";
+import { productsRepository } from "./products.repository.js"; 
 import { productManager } from "../dao/factory.js";
 
 import { cartsRepository } from "./cart.repository.js";
