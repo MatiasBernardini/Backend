@@ -1,8 +1,9 @@
-import {productManager, CartManager} from "../dao/factory.js"
+// import {productManager, CartManager} from "../dao/factory.js"
+import { productService, cartService } from "../repository/index.js"
 
 class cartController{
     static add_Cart = async (req,res) =>{
-        const newProductCart = await CartManager.addCart()
+        const newProductCart = await cartService.addCart()
 
         res.send(newProductCart)
     }
@@ -10,7 +11,7 @@ class cartController{
     static get_Cart = async (req,res) =>{
         try{
             const {cid} = req.params
-            let cart = await CartManager.getCartById(cid)
+            let cart = await cartService.getCart(cid)
             res.send({status: "succes", payload: cart})
         }catch(err){
             res.status(404).send({status: "error", error: `${err}`})
@@ -20,9 +21,9 @@ class cartController{
     static add_ProductInCart = async (req,res) =>{
         try{
             const {cid, pid} = req.params
-            let product = await productManager.getProductById(pid)
-            await CartManager.addProductToCart(product, cid)
-            res.send({status: "succes", payload: await CartManager.getCartById(cid)})
+            let product = await productService.getProductById(pid)
+            await cartService.addProductInCart(product, cid)
+            res.send({status: "succes", payload: await cartService.getCart(cid)})
         }catch(err){
             res.status(404).send({status: "error", error: `${err}`})
         }
@@ -33,7 +34,7 @@ class cartController{
             const {cid} = req.params
             const arr = req.body;
     
-            const result = await CartManager.addArrayToCart(cid, arr);
+            const result = await cartService.addArrayToCart(cid, arr);
     
             res.send({status: "succes", payload: result})
         }catch(err){
@@ -45,7 +46,7 @@ class cartController{
         try {
             const { cid, pid } = req.params
             const { quantity } = req.body
-            await CartManager.moreQuantity(cid, pid, quantity)
+            await cartService.putQuantityUpdated(cid, pid, quantity)
     
             res.send({ status: "succes", payload: "Quantity Updated." })
         } catch (err) {
@@ -57,7 +58,7 @@ class cartController{
         try{
             const{cid} = req.params;
             const {pid} = req.params;
-            const prodToDel = await CartManager.deleteProductInCart(cid,pid);
+            const prodToDel = await cartService.deleteProductInCart(cid,pid);
     
             res.send({status: "succes", payload: prodToDel})
         }catch(err){
@@ -68,7 +69,7 @@ class cartController{
     static delet_AllProductsInCart = async (req,res) =>{
         try{
             const {cid} = req.params
-            await CartManager.removingAllProductsFromCart(cid)
+            await cartService.deletAllProductsInCart(cid)
             res.send({status: "succes", payload: "Todos los Productos eliminados."})
         }catch(err){
             res.status(404).send({status: 'error', error: `${err}`})

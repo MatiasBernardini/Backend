@@ -1,0 +1,39 @@
+export class productsRepository{
+    constructor (dao) {
+        this.dao = dao
+    }
+
+    async getProduct (limit, page, sort, query) {    
+        const product = await this.dao.getProducts(limit, page, sort, query);
+
+        return product
+    }
+
+    async getProductById (id) {
+        const product = await this.dao.getProductById(id)
+
+        return product
+    }
+
+    async addProduct (title, description, price, code, stock) {
+        const product = await this.dao.addProduct(title, description, parseInt(price), code, parseInt(stock))
+
+        return product
+    }
+
+    async updateProduct (id, product){
+        await this.dao.updateProduct(id, product)
+
+        const productEmit = await this.dao.getProducts()
+
+        return productEmit
+    }
+
+    async deleteProduct (id) {
+        await this.dao.deleteProduct(id)
+
+        const product = await this.dao.getProducts()
+
+        return product
+    }
+}

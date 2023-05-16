@@ -1,4 +1,5 @@
-import {productManager, CartManager} from "../dao/factory.js"
+import { productService } from "../repository/index.js"
+import { CartManager} from "../dao/factory.js" /*revisar la funcion getCartProducts, ya que no funciona bien con service*/
 import { GetUserDto } from "../dao/dto/user.dto.js";
 
 class viewsController {
@@ -38,7 +39,7 @@ class viewsController {
     static get_Products = async (req, res) => {
         const { page, limit, sort, stock } = req.query
         const query = {stock}
-        const product = await productManager.getProducts(page, limit, sort, query)
+        const product = await productService.getProduct(page, limit, sort, query)
     
         const data = {
             products: product.docs.map ((p) => ({
