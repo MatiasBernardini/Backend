@@ -17,8 +17,8 @@ export class cartsRepository{
         return cart
     }
 
-    async addProductInCart (product, cid) {
-       await this.dao.addProductToCart(product, cid)
+    async addProductInCart (product, cid, quantity) {
+       await this.dao.addProductToCart(product, cid, quantity)
 
     } 
 

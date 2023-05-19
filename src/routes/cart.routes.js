@@ -19,4 +19,6 @@ cartsRouter.delete("/:cid/products/:pid", cartController.delete_ProductInCart)
 
 cartsRouter.delete("/:cid", cartController.delet_AllProductsInCart)
 
+cartsRouter.post ("/:cid/purchase", cartController.get_Purchase)
+
 export default cartsRouter

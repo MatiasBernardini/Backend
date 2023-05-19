@@ -32,7 +32,7 @@ class dbCartManager {
       }
     }
   
-    async addProductToCart(prod, cartID){
+    async addProductToCart(prod, cartID, quantity){
       const cart = await cartModel.findById(cartID)
 
       const product = cart.products.find(elem => elem.title === prod.title)
@@ -41,7 +41,7 @@ class dbCartManager {
           product.quantity += 1
           await cart.save()
       } else {
-          cart.products.push({product: prod._id, title: prod.title})
+          cart.products.push({product: prod._id, title: prod.title, quantity: quantity})
           await cart.save()
       }
     }
