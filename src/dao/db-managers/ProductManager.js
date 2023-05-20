@@ -72,6 +72,15 @@ class dbProductManager {
         throw new Error(err)
     }
 }
+
+async updateQuantityDb(id, stock){
+  try{
+      const result = await productsModel.findOneAndUpdate({_id: id}, {stock: stock}, {new: true})
+      return result
+  }catch(err){
+      throw new Error(err)
+  }
+}
 }
 
 export  {dbProductManager}; 

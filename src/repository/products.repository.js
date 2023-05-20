@@ -36,4 +36,12 @@ export class productsRepository{
 
         return product
     }
+
+    async updateQuantity (id, stock){
+        await this.dao.updateQuantityDb(id, stock)
+
+        const productEmit = await this.dao.getProducts()
+
+        return productEmit
+    }
 }

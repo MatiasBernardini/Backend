@@ -2,6 +2,7 @@
 import { productService, cartService } from "../repository/index.js"
 import {v4 as uuidv4} from 'uuid';
 import { ticketsModel } from "../dao/models/ticket.model.js";
+import { dbProductManager } from "../dao/db-managers/ProductManager.js";
 
 class cartController{
     static add_Cart = async (req,res) =>{
@@ -98,16 +99,26 @@ class cartController{
 
                     const productDb = await productService.getProductById(cartProduct.product)
 
+                    // console.log("cartProduct.quantity", cartProduct.quantity)
+                    // console.log ("productDb.stock", productDb.stock)
+
                     if(cartProduct.quantity<=productDb.stock){
+                        const quantityUpdate = productDb.stock - cartProduct.quantity
+
+                        const stockActualizar = await productService.updateQuantity (productDb, quantityUpdate)
+
+                        console.log ("stockActualizar", stockActualizar)
+
                         ticketProducts.push(cartProduct);
+
                     } else {
                         rejectedProducts.push(cartProduct);
                     }
 
                 }
 
-                console.log("ticketProducts",ticketProducts)
-                console.log("rejectedProducts",rejectedProducts)
+                // console.log("ticketProducts",ticketProducts)
+                // console.log("rejectedProducts",rejectedProducts)
 
                 const newTicket = {
                     code:uuidv4(),
