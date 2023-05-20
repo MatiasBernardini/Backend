@@ -113,19 +113,14 @@ class cartController{
                     code:uuidv4(),
                     purchase_datetime: new Date().toLocaleString(),
                     amount:500,
-                    purchaser:req.user.email
+                    purchaser: req.user.email
                 }
                 const ticketCreated = await ticketsModel.create(newTicket);
-                res.send(ticketCreated)
-
-                /* PREGUNTAR EL POR QUE EL DATE NO FUNCIONA SI ESTA PUESTO EN EL MODEL, PERO SI FUNCIONA SI LO PASO A STRING */
+                return res.send(ticketCreated)
 
             } else{
-                res.send ("el carrito no existe")
+               return res.send ("el carrito no existe")
             }
-
-
-            res.send({status: "succes", payload: cart})
         }catch(err){
             console.log (err)
             res.status(404).send({status: "error", error: `${err}`})
