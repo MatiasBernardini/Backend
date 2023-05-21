@@ -99,35 +99,40 @@ class cartController{
 
                     const productDb = await productService.getProductById(cartProduct.product)
 
-                    // console.log("cartProduct.quantity", cartProduct.quantity)
-                    // console.log ("productDb.stock", productDb.stock)
-
                     if(cartProduct.quantity<=productDb.stock){
                         const quantityUpdate = productDb.stock - cartProduct.quantity
 
-                        const stockActualizar = await productService.updateQuantity (productDb, quantityUpdate)
-
-                        console.log ("stockActualizar", stockActualizar)
+                        const stockActualizar = await productService.updateQuantity (productDb, quantityUpdate)  
 
                         ticketProducts.push(cartProduct);
 
+                        const deleteProduct = await cartService.deleteProductInCart (cart, productDb)
+                        
+                        console.log ("stockActualizar:", stockActualizar, deleteProduct )
+
+                        /* Hola lauti, no encontre alguna mejor manera de llamar a las constantes de stockActualizar - deleteProduct para que se ejecuten, por eso las puse en un console.log, si hay alguna mejor manera de hacerlo, me encantaría que me des ese consejo. Gracías */
+
                     } else {
                         rejectedProducts.push(cartProduct);
+
+                        console.log (`el id, del siguiente producto no pudo realizarse su compra: ${productDb.id} (${productDb.title})`)
                     }
 
                 }
 
-                // console.log("ticketProducts",ticketProducts)
-                // console.log("rejectedProducts",rejectedProducts)
-
-                const newTicket = {
-                    code:uuidv4(),
-                    purchase_datetime: new Date().toLocaleString(),
-                    amount:500,
-                    purchaser: req.user.email
+                if (ticketProducts.length) {
+                    const newTicket = {
+                        code:uuidv4(),
+                        purchase_datetime: new Date().toLocaleString(),
+                        amount: 500,
+                        purchaser: req.user.email
+                    }
+    
+                    const ticketCreated = await ticketsModel.create(newTicket);
+                    return res.send(ticketCreated)
+                } else {
+                    return res.send(rejectedProducts)
                 }
-                const ticketCreated = await ticketsModel.create(newTicket);
-                return res.send(ticketCreated)
 
             } else{
                return res.send ("el carrito no existe")
