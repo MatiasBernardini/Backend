@@ -94,6 +94,8 @@ class cartController{
                 const ticketProducts = [];
                 const rejectedProducts = [];
 
+                let prices = 0;
+
                 for (let i=0; i<cart.products.length; i++){
                     const cartProduct = cart.products [i];
 
@@ -110,6 +112,8 @@ class cartController{
                         
                         console.log ("stockActualizar:", stockActualizar, deleteProduct )
 
+                        prices = productDb.price + prices;
+
                         /* Hola lauti, no encontre alguna mejor manera de llamar a las constantes de stockActualizar - deleteProduct para que se ejecuten, por eso las puse en un console.log, si hay alguna mejor manera de hacerlo, me encantaría que me des ese consejo. Gracías */
 
                     } else {
@@ -121,10 +125,10 @@ class cartController{
                 }
 
                 if (ticketProducts.length) {
-                    const newTicket = {
+                    let newTicket = {
                         code:uuidv4(),
                         purchase_datetime: new Date().toLocaleString(),
-                        amount: 500,
+                        amount: prices,
                         purchaser: req.user.email
                     }
     
