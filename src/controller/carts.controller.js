@@ -1,8 +1,7 @@
-// import {productManager, CartManager} from "../dao/factory.js"
 import { productService, cartService } from "../repository/index.js"
 import {v4 as uuidv4} from 'uuid';
 import { ticketsModel } from "../dao/models/ticket.model.js";
-import { dbProductManager } from "../dao/db-managers/ProductManager.js";
+
 
 class cartController{
     static add_Cart = async (req,res) =>{
@@ -104,17 +103,13 @@ class cartController{
                     if(cartProduct.quantity<=productDb.stock){
                         const quantityUpdate = productDb.stock - cartProduct.quantity
 
-                        const stockActualizar = await productService.updateQuantity (productDb, quantityUpdate)  
+                        await productService.updateQuantity (productDb, quantityUpdate)  
 
                         ticketProducts.push(cartProduct);
 
-                        const deleteProduct = await cartService.deleteProductInCart (cart, productDb)
+                        await cartService.deleteProductInCart (cart, productDb)
                         
-                        console.log ("stockActualizar:", stockActualizar, deleteProduct )
-
                         prices = productDb.price + prices;
-
-                        /* Hola lauti, no encontre alguna mejor manera de llamar a las constantes de stockActualizar - deleteProduct para que se ejecuten, por eso las puse en un console.log, si hay alguna mejor manera de hacerlo, me encantaría que me des ese consejo. Gracías */
 
                     } else {
                         rejectedProducts.push(cartProduct);

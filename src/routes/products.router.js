@@ -8,6 +8,8 @@ productRouter.use (json());
 
 productRouter.get ("/", productsController.get_Products)
 
+productRouter.get ("/mockingproducts", productsController.generate_Product_Faker)
+
 productRouter.get ("/:id", productsController.get_Product_Id)
 
 productRouter.post ("/", checkRole (["admin"]) ,productsController.add_Product)

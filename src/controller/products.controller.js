@@ -1,4 +1,5 @@
 import { productService } from "../repository/index.js"
+import { generateProductFaker } from "../utils.js"
 
 class productsController {
     static get_Products = async (req, res) => {
@@ -61,6 +62,24 @@ class productsController {
     
             res.send({status: "succes", payload: "Producto eliminado"})
         } catch(err){
+            res.status(404).send({status: "error", error: `${err}`})
+        }
+    }
+
+    static generate_Product_Faker = async (req, res) => {
+        try {
+            const cantidad = parseInt (req.query.cantidad) || 100;
+
+            let products = [];
+
+            for(let i=0;i<cantidad;i++){
+                const product = generateProductFaker();
+                products.push(product)
+            };
+
+            res.json({products}); 
+
+        } catch (err) {
             res.status(404).send({status: "error", error: `${err}`})
         }
     }
