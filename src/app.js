@@ -8,6 +8,7 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import { initializedPassport } from "./config/passport.config.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
 
 import productRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/cart.routes.js";
@@ -64,3 +65,6 @@ app.use ("/api/products", productRouter)
 app.use("/api/carts", cartsRouter)
 app.use("/", viewstRouter)
 app.use ("/api/sessions", authRouter)
+
+
+app.use (errorHandler);

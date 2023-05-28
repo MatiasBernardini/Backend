@@ -7,6 +7,12 @@ import GithubStrategy from "passport-github2";
 import { createHash, isValidPassword } from "../utils.js";
 import {dbCartManager} from "../dao/db-managers/cart.js";
 
+import { CustomError } from "../services/customError.service.js";
+import { EError } from "../enums/EError.js";
+import { generateUserErrorInfo } from "../services/userError.js";
+
+
+
 const cartInUser = new dbCartManager();
 
 const adminCount = options.auth.account
@@ -22,6 +28,15 @@ const initializedPassport = ()=>{
             try {
                 const userDto = new CreateUserDto (req.body);
                 const {first_name, last_name, full_Name ,age } = userDto;
+                if(!first_name || !last_name || !age){
+                    CustomError.createError({
+                        name:"User create error",
+                        cause:generateUserErrorInfo(req.body),
+                        message:"Error creando el usuario",
+                        errorCode:EError.INVALID_JSON
+                    });
+                };
+
                 const user = await userModel.findOne({email: username});
                 if(user){
                     return done(null,false)
