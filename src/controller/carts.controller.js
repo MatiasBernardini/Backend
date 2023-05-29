@@ -2,6 +2,11 @@ import { productService, cartService } from "../repository/index.js"
 import {v4 as uuidv4} from 'uuid';
 import { ticketsModel } from "../dao/models/ticket.model.js";
 
+import { CustomError } from "../services/customError.service.js";
+import { EError } from "../enums/EError.js";
+import { generateCartErrorParam } from "../services/cartError.js";
+import { generateProductErrorParam } from "../services/productError.js";
+
 
 class cartController{
     static add_Cart = async (req,res) =>{
@@ -13,6 +18,17 @@ class cartController{
     static get_Cart = async (req,res) =>{
         try{
             const {cid} = req.params
+
+            const cartId = parseInt(cid);
+            if(Number.isNaN(cartId)){
+                CustomError.createError({
+                    name:"Cart param error",
+                    cause:generateCartErrorParam(cid),
+                    message:"Error al encontrar el carrito solicitado (Parametro mal pasado)",
+                    errorCode:EError.INVALID_PARAM
+                });
+            };
+
             let cart = await cartService.getCart(cid)
             res.send({status: "succes", payload: cart})
         }catch(err){
@@ -24,9 +40,30 @@ class cartController{
         try{
             const {cid, pid } = req.params
             const {quantity} = req.body
-            console.log (quantity)
+
+            const cartId = parseInt(cid);
+            if(Number.isNaN(cartId)){
+                CustomError.createError({
+                    name:"Cart param error",
+                    cause:generateCartErrorParam(cid),
+                    message:"Error al encontrar el carrito solicitado (Parametro mal pasado)",
+                    errorCode:EError.INVALID_PARAM
+                });
+            };
+            const productId = parseInt(pid);
+            if(Number.isNaN(productId)){
+                CustomError.createError({
+                    name:"Product id error",
+                    cause:generateProductErrorParam(pid),
+                    message:"Error al encontrar el producto",
+                    errorCode:EError.INVALID_PARAM
+                });
+            };
+
             let product = await productService.getProductById(pid)
+
             await cartService.addProductInCart(product, cid, quantity)
+
             res.send({status: "succes", payload: await cartService.getCart(cid)})
         }catch(err){
             res.status(404).send({status: "error", error: `${err}`})
@@ -38,6 +75,16 @@ class cartController{
             const {cid} = req.params
             const arr = req.body;
     
+            const cartId = parseInt(cid);
+            if(Number.isNaN(cartId)){
+                CustomError.createError({
+                    name:"Cart param error",
+                    cause:generateCartErrorParam(cid),
+                    message:"Error al encontrar el carrito solicitado (Parametro mal pasado)",
+                    errorCode:EError.INVALID_PARAM
+                });
+            };
+
             const result = await cartService.addArrayToCart(cid, arr);
     
             res.send({status: "succes", payload: result})
@@ -50,6 +97,28 @@ class cartController{
         try {
             const { cid, pid } = req.params
             const { quantity } = req.body
+
+            const cartId = parseInt(cid);
+            if(Number.isNaN(cartId)){
+                CustomError.createError({
+                    name:"Cart param error",
+                    cause:generateCartErrorParam(cid),
+                    message:"Error al encontrar el carrito solicitado (Parametro mal pasado)",
+                    errorCode:EError.INVALID_PARAM
+                });
+            };
+            const productId = parseInt(pid);
+            if(Number.isNaN(productId)){
+                CustomError.createError({
+                    name:"Product id error",
+                    cause:generateProductErrorParam(pid),
+                    message:"Error al encontrar el producto",
+                    errorCode:EError.INVALID_PARAM
+                });
+            };
+
+
+
             await cartService.putQuantityUpdated(cid, pid, quantity)
     
             res.send({ status: "succes", payload: "Quantity Updated." })
@@ -62,6 +131,26 @@ class cartController{
         try{
             const{cid} = req.params;
             const {pid} = req.params;
+
+            const cartId = parseInt(cid);
+            if(Number.isNaN(cartId)){
+                CustomError.createError({
+                    name:"Cart param error",
+                    cause:generateCartErrorParam(cid),
+                    message:"Error al encontrar el carrito solicitado (Parametro mal pasado)",
+                    errorCode:EError.INVALID_PARAM
+                });
+            };
+            const productId = parseInt(pid);
+            if(Number.isNaN(productId)){
+                CustomError.createError({
+                    name:"Product id error",
+                    cause:generateProductErrorParam(pid),
+                    message:"Error al encontrar el producto",
+                    errorCode:EError.INVALID_PARAM
+                });
+            };
+
             const prodToDel = await cartService.deleteProductInCart(cid,pid);
     
             res.send({status: "succes", payload: prodToDel})
@@ -73,7 +162,19 @@ class cartController{
     static delet_AllProductsInCart = async (req,res) =>{
         try{
             const {cid} = req.params
+
+            const cartId = parseInt(cid);
+            if(Number.isNaN(cartId)){
+                CustomError.createError({
+                    name:"Cart param error",
+                    cause:generateCartErrorParam(cid),
+                    message:"Error al encontrar el carrito solicitado (Parametro mal pasado)",
+                    errorCode:EError.INVALID_PARAM
+                });
+            };
+
             await cartService.deletAllProductsInCart(cid)
+            
             res.send({status: "succes", payload: "Todos los Productos eliminados."})
         }catch(err){
             res.status(404).send({status: 'error', error: `${err}`})
