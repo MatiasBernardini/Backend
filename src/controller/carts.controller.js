@@ -215,7 +215,7 @@ class cartController{
                     } else {
                         rejectedProducts.push(cartProduct);
 
-                        console.log (`el id, del siguiente producto no pudo realizarse su compra: ${productDb.id} (${productDb.title})`)
+                        req.logger.info (`el id, del siguiente producto no pudo realizarse su compra: ${productDb.id} (${productDb.title})`)
                     }
 
                 }
@@ -238,7 +238,7 @@ class cartController{
                return res.send ("el carrito no existe")
             }
         }catch(err){
-            console.log (err)
+            req.logger.error (err)
             res.status(404).send({status: "error", error: `${err}`})
         }
     }

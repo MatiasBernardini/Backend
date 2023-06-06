@@ -32,7 +32,7 @@ class viewsController {
     
             res.render ("profile", {userInfo})
 
-            console.log (userDto)
+            req.logger.info (userDto)
         }
     }
 
