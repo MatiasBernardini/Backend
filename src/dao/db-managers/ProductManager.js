@@ -1,8 +1,12 @@
 import productsModel from "../models/product.model.js"
+import { addLogger } from "../../utils/logger.js";
+
+const logger = addLogger ();
+
 
 class dbProductManager {
   constructor () {
-    console.log("Working with users using MongoDb");
+    logger.info("Working with users using Db (ProductManager)");
   }
 
   async getProducts(limit, page, sortQ, query) {

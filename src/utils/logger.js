@@ -1,4 +1,4 @@
-import winston from "winston";
+import winston, { format } from "winston";
 import path from "path"
 import __dirname from "../utils.js";
 import { options } from "../config/config.js";
@@ -16,6 +16,7 @@ const customLevelWinston = {
 
 const devLogger = winston.createLogger({
     levels: customLevelWinston.levels,
+    format: format.combine (format.simple()),
     transports:[
         new winston.transports.Console({level:"debug"})
     ]
@@ -32,7 +33,7 @@ const prodLogger = winston.createLogger({
 
 const currentEnv = options.server.nodeEnv || "development";
 
-export const addLogger = (req,res,next)=>{
+export const addLoggerReq = (req,res,next)=>{
     if(currentEnv === "development"){
         req.logger = devLogger
     } else {
@@ -40,4 +41,15 @@ export const addLogger = (req,res,next)=>{
     }
     req.logger.http(`${req.url} - method: ${req.method}`);
     next();
-}
+};
+
+export const addLogger = ()=>{
+    let currentLogger;
+
+    if(currentEnv === "development"){
+        currentLogger=devLogger;
+    } else {
+        currentLogger=prodLogger;
+    }
+    return currentLogger;
+};

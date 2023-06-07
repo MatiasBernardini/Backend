@@ -3,7 +3,6 @@ import { engine } from 'express-handlebars';
 import { options } from "./config/config.js";
 import __dirname from "./utils.js"
 import { Server } from "socket.io";
-import mongoose from 'mongoose';
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
@@ -15,7 +14,7 @@ import cartsRouter from "./routes/cart.routes.js";
 import viewstRouter from "./routes/views.routes.js";
 import authRouter from "./routes/auth.routes.js";
 
-import { addLogger } from "./utils/logger.js";
+import { addLoggerReq, addLogger } from "./utils/logger.js";
 
 /* ---------------------------------------------------------- */
 
@@ -27,7 +26,7 @@ const mongoUrlSecret = options.mongo.url
 app.use (express.json())
 app.use(express.urlencoded({extended:true}));
 
-app.use (addLogger)
+app.use (addLoggerReq)
 
 app.use(express.static(__dirname + '/../public'))
 
@@ -36,7 +35,12 @@ app.set('view engine', 'handlebars');
 app.set('views', __dirname + '/views');
 
 
-const httpServer = app.listen(port,()=>console.log(`Server listening on port ${port}`));
+/*------------------------------------------------ */
+
+const logger = addLogger ()
+
+
+const httpServer = app.listen(port,()=>logger.info(`Server listening on port ${port}`));
 
 
 app.use (session({
@@ -57,7 +61,7 @@ app.use(passport.session());
 const io = new Server (httpServer)
 
 io.on ("connection", (socket) => {
-    console.log ("Nuevo cliente conectado")
+    logger.info ("Nuevo cliente conectado")
 })
 
 app.use((req,res,next)=>{

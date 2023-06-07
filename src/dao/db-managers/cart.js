@@ -1,8 +1,11 @@
 import cartModel from "../models/cart.model.js"
+import { addLogger } from "../../utils/logger.js";
+
+const logger = addLogger ();
 
 class dbCartManager {
     constructor () {
-        console.log("Working with users using DB");
+        logger.info("Working with users using DB (CartManager)");
     }
 
     async getCart() {
@@ -58,7 +61,7 @@ class dbCartManager {
           product.quantity += quantity
           await cart.save()
           await cart.populate("products.product")
-          console.log(JSON.stringify(cart, null, "\t"))
+          logger.info(JSON.stringify(cart, null, "\t"))
       } else {
           cart.products.push({ product: productID })
           await cart.save()
@@ -66,7 +69,7 @@ class dbCartManager {
           newProduct.quantity = quantity
           await cart.save()
           await cart.populate("products.product")
-          console.log(JSON.stringify(cart, null, "\t"))
+          logger.info(JSON.stringify(cart, null, "\t"))
       }
     }
 

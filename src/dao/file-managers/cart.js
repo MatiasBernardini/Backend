@@ -1,11 +1,13 @@
 import fs from "fs" 
 import __dirname from "../../utils.js"
+import { addLogger } from "../../utils/logger.js";
 
 const path = __dirname + "/dao/file-managers/files/Cart.json";
+const logger = addLogger (); 
 
 class cartManager {
     constructor () {
-        console.log("Working with users using filesystem");
+        logger.info("Working with users using filesystem");
     }
 
     async getCart() {
