@@ -57,7 +57,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-
 const io = new Server (httpServer)
 
 io.on ("connection", (socket) => {
@@ -69,15 +68,6 @@ app.use((req,res,next)=>{
     next()
 })
 
-app.get("/logger/niveles", (req,res)=>{
-    req.logger.debug("nivel debug");
-    req.logger.http("nivel http");
-    req.logger.info("nivel info");
-    req.logger.warning("nivel warning");
-    req.logger.error("nivel error");
-    req.logger.fatal("nivel fatal");
-    res.send("prueba niveles")
-});
 
 app.use ("/api/products", productRouter)
 app.use("/api/carts", cartsRouter)
