@@ -1,7 +1,8 @@
 import passport from "passport";
 import { sendRecoveryPass } from "../utils/email.js";
 import { generateEmailToken, verifyEmailToken, isValidPassword, createHash } from "../utils.js";
-import UserModel from "../dao/models/user.model.js"
+import { findUSerService, findUSerAndUpdateService } from "../repository/user.repository.js";
+
 
 class authController{
     static post_PassportSignup = passport.authenticate("signupStrategy",{
@@ -49,13 +50,12 @@ class authController{
     static post_ForgotPassword = async (req, res) => {
         try {
             const {email} = req.body;
-            //verificamos que el usuario exista
-            const user = await UserModel.findOne({email:email});
+            const user = await findUSerService(email);
             if(!user){
                 return res.send(`<div>Error, <a href="/forgot-password">Intente de nuevo</a></div>`);
             }
 
-            //si el usuario existe, generamos el token del enlace
+
             const token = generateEmailToken(email,3*60);
             await sendRecoveryPass(email,token);
             res.send("se envio un correo a su cuenta para restablecer la contraseña, regresar <a href='/login'>al login</a>");
@@ -70,15 +70,15 @@ class authController{
             const token = req.query.token;
             const {email, newPassword} = req.body;
 
-            //validamos el token
+
             const validEmail = verifyEmailToken(token);
             if(!validEmail){
                 return res.send(`El enlace ya no es valido, genere un nuevo enlace para recuperar la contraseña <a href="/forgot-password" >Recuperar contraseña</a>`)
             }
 
-            const user = await UserModel.findOne({email:email});
+            const user = await findUSerService(email);
             if(!user){
-                return res.send("El usuario noe sta registrado")
+                return res.send("usuario no registrado")
             }
             if(isValidPassword(user, newPassword)){
                 return res.send("No puedes usar la misma contraseña");
@@ -90,8 +90,8 @@ class authController{
             }
             console.log("userData",userData)
 
-            const userUpdate = await UserModel.findOneAndUpdate({email:email},userData);
-            res.render("login",{message:"contraseña actualizada"});
+            const userUpdate = await findUSerAndUpdateService(email, userData);
+            res.render("login",{message:"Se ha actualiza correctamente la contraseña"});
         } catch (error) {
             console.log ("error", error)
             res.send(error.message);
