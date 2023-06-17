@@ -1,5 +1,7 @@
 <h1>pagina login</h1>
 
+{{message}}
+
 <div>
     <form method="post" action="/api/sessions/login">
         <input type="text" placeholder="correo" name="email"/>
@@ -13,5 +15,12 @@
 <div>
     <a href="/api/sessions/github">
         registrarse con github
+    </a>
+</div>
+
+<div>
+    <hr>
+    <a href="/forgot-password">
+        <button>Restablecer constraseña</button>
     </a>
 </div>

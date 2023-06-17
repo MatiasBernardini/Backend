@@ -11,6 +11,10 @@ viewstRouter.get("/login", viewsController.get_Login)
 
 viewstRouter.get("/signup", viewsController.get_Signup)
 
+viewstRouter.get("/forgot-password", viewsController.get_Forgot)
+
+viewstRouter.get("/reset-password", viewsController.get_ResetPass)
+
 viewstRouter.get("/profile", viewsController.get_Profile)
 
 viewstRouter.get( "/products",  viewsController.get_Products)

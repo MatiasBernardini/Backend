@@ -22,6 +22,12 @@ authRouter.post("/login", authController.post_PassportLogin, authController.redi
 
 authRouter.get("/failure-login",authController.get_FailedLogin);
 
+/*----------------------------------RESET PASSWORD----------------------------------------------*/
+
+authRouter.post ("/forgot-password", authController.post_ForgotPassword);
+
+authRouter.post ("/reset-password", authController.post_ResetPassword);
+
 /*----------------------------------LOGOUT----------------------------------------------*/
 
 authRouter.post("/logout", authController.post_Logout);

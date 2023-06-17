@@ -15,6 +15,16 @@ class viewsController {
         res.render ("signup")
     }
 
+    static get_Forgot = async (req, res) => {
+        res.render ("forgotPassword")
+    }
+
+    static get_ResetPass = async (req, res) => {
+        const token = req.query.token;
+
+        res.render ("resetPassword", {token})
+    }
+
     static get_Profile = async (req, res) => {
         if (!req.user){
             res.send (`Tiene que iniciar sesion, para ver su perfil <a href="/login">Incia sesion</a>`)

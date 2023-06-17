@@ -8,6 +8,7 @@ import MongoStore from "connect-mongo";
 import passport from "passport";
 import { initializedPassport } from "./config/passport.config.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
+import path from "path";
 
 import productRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/cart.routes.js";
@@ -21,7 +22,8 @@ import { addLoggerReq, addLogger } from "./utils/logger.js";
 const app = express()
 
 const port = options.server.port;
-const mongoUrlSecret = options.mongo.url
+const mongoUrlSecret = options.mongo.url;
+const secretSession = options.server.secretSession
 
 app.use (express.json())
 app.use(express.urlencoded({extended:true}));
@@ -47,7 +49,7 @@ app.use (session({
     store: MongoStore.create({
         mongoUrl: mongoUrlSecret,
     }),
-    secret: "claveSecreta",
+    secret: secretSession,
     resave: true,
     saveUninitialized: true
 }))
@@ -75,4 +77,4 @@ app.use("/", viewstRouter)
 app.use ("/api/sessions", authRouter)
 
 
-app.use (errorHandler);
+// app.use (errorHandler);
