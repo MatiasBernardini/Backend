@@ -32,7 +32,7 @@ class dbProductManager {
     return products
   }
 
-  async addProduct (title, description, price, code, stock) {
+  async addProduct (title, description, price, code, stock, owner) {
     code = Math.floor(Math.random() * 100000000000)
 
     try {
@@ -41,7 +41,8 @@ class dbProductManager {
             description,
             price,
             code,
-            stock
+            stock,
+            owner
         }
         const result = await productsModel.create(product)
         return result

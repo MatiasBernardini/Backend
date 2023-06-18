@@ -15,8 +15,8 @@ export class productsRepository{
         return product
     }
 
-    async addProduct (title, description, price, code, stock) {
-        const product = await this.dao.addProduct(title, description, parseInt(price), code, parseInt(stock))
+    async addProduct (title, description, price, code, stock, owner) {
+        const product = await this.dao.addProduct(title, description, parseInt(price), code, parseInt(stock), owner)
 
         return product
     }

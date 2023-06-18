@@ -46,7 +46,7 @@ class productsController {
 
     static add_Product = async (req, res) => {
         try {
-            const { title, description, price, code, stock} = req.body
+            const { title, description, price, code, stock, owner} = req.body
             if(!title || !description || !price || !code || !stock){
                 CustomError.createError({
                     name:"Product create error",
@@ -56,7 +56,9 @@ class productsController {
                 });
             };
 
-            const product = await productService.addProduct(title, description, parseInt(price), code, parseInt(stock))
+            let owner1 = req.user._id;
+
+            const product = await productService.addProduct(title, description, parseInt(price), code, parseInt(stock), owner1)
 
             req.io.emit("added-Product", req.body)
 
@@ -102,9 +104,10 @@ class productsController {
     }
 
     static delete_Product = async (req, res) => {
-        try{
-            const {id} = req.params
-            const productId = parseInt(id);
+        try {
+            const productId = req.params.id;
+            const product = await productService.getProductById(productId);
+
             if(Number.isNaN(productId)){
                 CustomError.createError({
                     name:"Product id error:",
@@ -114,14 +117,22 @@ class productsController {
                 });
             };
 
-            await productService.deleteProduct(id)
-    
-            const product = await productService.getProduct()
-            req.io.emit("delete-product", product)
-    
-            res.send({status: "succes", payload: "Producto eliminado"})
-        } catch(err){
-            res.status(404).send({status: "error", error: `${err}`})
+            if(product){
+                const productOwer = JSON.parse(JSON.stringify(product.owner));
+
+                const userId = JSON.parse(JSON.stringify(req.user._id));
+
+                if((req.user.rol === "premium" && productOwer == userId) || req.user.rol === "admin"){
+                    await productService.deleteProduct(productId);
+                    return res.json({status:"success", message:"producto eliminado"});
+                } else {
+                    res.json({status:"error", message:"no puedes borrar este producto"})
+                }
+            } else {
+                return res.json({status:"error", message:"El producto no existe"});
+            }
+        } catch (error) {
+            res.send(error.message);
         }
     }
 

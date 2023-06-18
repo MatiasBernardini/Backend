@@ -21,6 +21,11 @@ const productsSchema = new mongoose.Schema({
   stock: {
     type: Number,
   },
+
+  owner:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"users"
+  }
 });
 
 productsSchema.plugin(mongoosePaginate);
