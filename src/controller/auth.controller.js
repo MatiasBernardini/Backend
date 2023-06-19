@@ -56,7 +56,7 @@ class authController{
             }
 
 
-            const token = generateEmailToken(email,3*60);
+            const token = generateEmailToken(email,2*60);
             await sendRecoveryPass(email,token);
             res.send("se envio un correo a su cuenta para restablecer la contraseña, regresar <a href='/login'>al login</a>");
 

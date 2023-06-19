@@ -1,11 +1,9 @@
-import userModel from "../dao/models/user.model.js";
 import { findUserByIdService, findUSerUpdateByIdService } from "../repository/user.repository.js";
 
 export class userController {
     static put_Premium_User = async (req, res) => {
         try {
             const userId = req.params.uid;
-            //verificar si el usuario existe en la base de datos
             const user = await findUserByIdService(userId);
             const userRol = user.rol;
     
