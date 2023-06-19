@@ -9,7 +9,7 @@ cartsRouter.post("/", cartController.add_Cart)
 
 cartsRouter.get("/:cid", cartController.get_Cart)
 
-cartsRouter.post("/:cid/products/:pid", checkRole (["user"]) ,cartController.add_ProductInCart)
+cartsRouter.post("/:cid/products/:pid", checkRole (["user", "premium"]) ,cartController.add_ProductInCart)
 
 cartsRouter.put("/:cid", cartController.add_ArrayToCart)
 

@@ -38,33 +38,45 @@ class cartController{
 
     static add_ProductInCart = async (req,res) =>{
         try{
-            const {cid, pid } = req.params
+            const productId = req.params.pid;
+            const product = await productService.getProductById(productId);
+            const cartId = req.params.cid
+
             const {quantity} = req.body
 
-            const cartId = parseInt(cid);
-            if(Number.isNaN(cartId)){
-                CustomError.createError({
-                    name:"Cart param error",
-                    cause:generateCartErrorParam(cid),
-                    message:"Error al encontrar el carrito solicitado (Parametro mal pasado)",
-                    errorCode:EError.INVALID_PARAM
-                });
-            };
-            const productId = parseInt(pid);
-            if(Number.isNaN(productId)){
-                CustomError.createError({
-                    name:"Product id error",
-                    cause:generateProductErrorParam(pid),
-                    message:"Error al encontrar el producto",
-                    errorCode:EError.INVALID_PARAM
-                });
-            };
+            // const cartId = parseInt(cid);
+            // if(Number.isNaN(cartId)){
+            //     CustomError.createError({
+            //         name:"Cart param error",
+            //         cause:generateCartErrorParam(cid),
+            //         message:"Error al encontrar el carrito solicitado (Parametro mal pasado)",
+            //         errorCode:EError.INVALID_PARAM
+            //     });
+            // };
+            // const productId = parseInt(pid);
+            // if(Number.isNaN(productId)){
+            //     CustomError.createError({
+            //         name:"Product id error",
+            //         cause:generateProductErrorParam(pid),
+            //         message:"Error al encontrar el producto",
+            //         errorCode:EError.INVALID_PARAM
+            //     });
+            // };
 
-            let product = await productService.getProductById(pid)
+            if(product){
+                const productOwer = JSON.parse(JSON.stringify(product.owner));
 
-            await cartService.addProductInCart(product, cid, quantity)
+                const userId = JSON.parse(JSON.stringify(req.user._id));
 
-            res.send({status: "succes", payload: await cartService.getCart(cid)})
+                if((req.user.rol === "premium" && productOwer == userId)){
+                    return res.json({status:"error", message:"no se puede agregar al cart un producto que te pertence"});
+                } else {
+                    await cartService.addProductInCart(product, cartId, quantity)
+
+                    res.send({status: "succes", payload: await cartService.getCart(cartId)})
+                }
+            }
+
         }catch(err){
             res.status(404).send({status: "error", error: `${err}`})
         }
