@@ -9,6 +9,8 @@ import passport from "passport";
 import { initializedPassport } from "./config/passport.config.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import path from "path";
+import { swaggerSpecs } from "./config/docConfig.js";
+import swaggerUi from "swagger-ui-express";
 
 import productRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/cart.routes.js";
@@ -77,6 +79,7 @@ app.use("/api/carts", cartsRouter)
 app.use("/", viewstRouter)
 app.use ("/api/sessions", authRouter)
 app.use ("/api/users" , usersRouter)
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup (swaggerSpecs));
 
 
-// app.use (errorHandler);
+app.use (errorHandler);

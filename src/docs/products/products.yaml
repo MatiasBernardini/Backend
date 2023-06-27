@@ -1,0 +1,198 @@
+paths:
+  /api/products/:
+    get:
+      summary: Obtener todos los productos
+      tags:
+        - products
+      responses:
+        "200":
+          description: Todos los productos fueron obtenidos correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/products'
+        "500":
+          description: Error interno del servidor
+
+    post:
+      summary: agregar un producto
+      tags:
+        - products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/addProduct"
+      responses:
+        "200":
+          description: Se agrego el poduct correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    $ref: "#components/schemas/products"
+        "500":
+          description: Error interno del servidor
+  
+  /api/products/{id}:
+    get:
+      summary: Obtener un producto mediante el id
+      tags:
+        - products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id es el id del product que desea obtener
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Se obtuvo el product correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/products'
+        "500":
+          description: Error interno del servidor
+
+    put:
+      summary: Actualizar un producto mediante el id
+      tags:
+        - products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id es el id del product que desea actualizar
+          schema:
+            $type: string
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/updateProduct'
+
+      responses:
+        "200":
+          description: Se actualizo el product correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/products'
+        "500":
+          description: Error interno del servidor
+  
+    delete:
+      summary: Eliminar un producto mediante el id
+      tags:
+        - products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id es el id del product que desea eliminar
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Se elimino el product correctamente
+        "500":
+          description: Error interno del servidor 
+
+
+
+components:
+  schemas:
+    products:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: id del product autogenerado por la base de datos
+        title:
+          type: string
+          description: nombre del product
+        description:
+          type: string
+          description: descripcion del producto
+        price:
+          type: number
+          description: precio del producto
+        code:
+          type: number
+          description: codigo del producto, campo unico
+        stock:
+          type: number
+          description: stock del producto
+        owner:
+          type: ObjectId
+          description: id del usuario que creo el producto
+      example:
+        _id: ObjectId('smskjsdij348ddn3833')
+        title: vaso
+        description: vaso de vidrio
+        price: 180
+        code: 3463738294637283
+        stock: 18
+        owner: ObjectId('jf3734ffjf93u8f4j')
+
+  requestBodies:
+    addProduct:
+      type: object
+      properties:
+          title:
+            type: string
+            description: nombre del product
+          description:
+            type: string
+            description: descripcion del producto
+          price:
+            type: number
+            description: precio del producto
+          code:
+            type: number
+            description: codigo del producto, campo unico
+          stock:
+            type: number
+            description: stock del producto
+      example:
+        title: vaso
+        description: vaso de vidrio
+        price: 180
+        code: 3463738294637283
+        stock: 18
+
+    updateProduct:
+      type: object
+      properties:
+          title:
+            type: string
+            description: nombre del product
+          description:
+            type: string
+            description: descripcion del producto
+          price:
+            type: number
+            description: precio del producto
+          code:
+            type: number
+            description: codigo del producto, campo unico
+          stock:
+            type: number
+            description: stock del producto
+      example:
+        title: vaso actualizado
+        description: vaso de vidrio
+        price: 180
+        code: 3463738294637283
+        stock: 18
