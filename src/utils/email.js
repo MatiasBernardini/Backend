@@ -1,7 +1,8 @@
 import nodemailer from "nodemailer";
 import { options } from "../config/config.js";
 
-//creamos el transporter
+const portServer = options.server.port;
+
 const transporter = nodemailer.createTransport({
     service:"gmail",
     port:587,
@@ -15,12 +16,10 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-
-//funcion para generar el correo de recuperacion de constraseña
 export const sendRecoveryPass = async(userEmail,token)=>{
-    const link = `http://localhost:8080/reset-password?token=${token}`;//enlace con el token
+    const link = `http://localhost:${portServer}/reset-password?token=${token}`;
 
-    //estructura del correo
+
     await transporter.sendMail({
         from:options.gmail.emailCreator,
         to:userEmail,

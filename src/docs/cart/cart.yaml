@@ -44,6 +44,8 @@ paths:
                     type: string
                   payload:
                     $ref: "#components/schemas/cart"
+        "404":
+          description: Error al pasar el parametro
         "500":
           description: Error interno del servidor
 
@@ -61,6 +63,8 @@ paths:
       responses:
         "200":
           description: Todos los Productos eliminados.
+        "404":
+          description: Error al pasar el parametro
         "500":
           description: Error interno del servidor
 
@@ -94,6 +98,8 @@ paths:
                     type: string
                   payload:
                     $ref: "#components/schemas/cart"
+        "404":
+          description: Error al pasar el parametro
         "500":
           description: Error interno del servidor
 
@@ -126,6 +132,8 @@ paths:
                     type: string
                   payload:
                     $ref: "#components/schemas/emptyCart"
+        "404":
+          description: Error al pasar el parametro
         "500":
           description: Error interno del servidor
 

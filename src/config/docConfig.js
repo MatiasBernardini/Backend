@@ -1,8 +1,9 @@
 import __dirname from "../utils.js";
 import swaggerJsDoc from "swagger-jsdoc";
 import path from "path";
+import { options } from "./config.js";
 
-const port = 8080;
+const port = options.server.port;
 
 const swaggerOptions = {
     definition:{
