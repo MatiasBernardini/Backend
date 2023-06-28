@@ -11,8 +11,6 @@ cartsRouter.get("/:cid", cartController.get_Cart)
 
 cartsRouter.post("/:cid/products/:pid", checkRole (["user", "premium"]) ,cartController.add_ProductInCart)
 
-cartsRouter.put("/:cid", cartController.add_ArrayToCart)
-
 cartsRouter.put("/:cid/products/:pid", cartController.put_QuantityUpdated)
 
 cartsRouter.delete("/:cid/products/:pid", cartController.delete_ProductInCart)

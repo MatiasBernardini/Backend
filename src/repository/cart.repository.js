@@ -22,11 +22,11 @@ export class cartsRepository{
 
     } 
 
-    async addArrayToCart (cid, arr) {
-        const result = await this.dao.addArrayToCart(cid, arr);
+    // async addArrayToCart (cid, arr) {
+    //     const result = await this.dao.addArrayToCart(cid, arr);
 
-        return result
-    }
+    //     return result
+    // }
 
     async putQuantityUpdated (cid, pid, quantity){
         await this.dao.moreQuantity(cid, pid, quantity)

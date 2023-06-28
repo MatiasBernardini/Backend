@@ -1,0 +1,159 @@
+paths:
+  /api/carts/:
+    post: 
+      summary: agregar un carrito nuevo
+      tags:
+        - carts
+      responses:
+        "200":
+          description: Se agrego un nuevo carrito correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    $ref: "#components/schemas/emptyCart"
+        "500":
+          description: Error interno del servidor
+
+  /api/carts/{cid}:
+    get: 
+      summary: buscar un carrito por el id
+      tags:
+        - carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cid es el id del carrito que desea obtener
+          schema:
+            $type: string
+
+      responses:
+        "200":
+          description: Se encontro el carrito correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    $ref: "#components/schemas/cart"
+        "500":
+          description: Error interno del servidor
+
+    delete:
+      summary: eliminar todos los productos del carrito
+      tags:
+        - carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cid es el id del carrito que desea eliminar todos sus productos
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Todos los Productos eliminados.
+        "500":
+          description: Error interno del servidor
+
+  /api/carts/{cid}/products/{pid}:
+    post:
+      summary: agregar un producto al carrito
+      tags:
+        - carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cid es el carrito el cual se le van a agregar productos
+          schema:
+            $type: string
+        - name: pid
+          in: path
+          required: true
+          description: pid es el id del porducto
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Se agrego el producto correctamente al carrito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    $ref: "#components/schemas/cart"
+        "500":
+          description: Error interno del servidor
+
+    delete:
+      summary: eliminar un producto al carrito
+      tags:
+        - carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cid es el carrito el cual se le va a eliminar algun producto en especifico
+          schema:
+            $type: string
+        - name: pid
+          in: path
+          required: true
+          description: pid es el id del porducto
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Se agrego el producto correctamente al carrito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    $ref: "#components/schemas/emptyCart"
+        "500":
+          description: Error interno del servidor
+
+
+components:
+  schemas:
+    emptyCart:
+      type: object
+      properties:
+        products:
+          type: array
+          description: array que contiene todos los productos agregados al carrito
+        _id:
+          type: ObjectId
+          description: id del carrito autogenerado por la base de datos
+      example:
+        products: "[]"
+        _id: ObjectId('649c8f5c4ec2d20809ad0462')
+
+    cart:
+      type: object
+      properties:
+        products:
+          type: array
+          description: array que contiene todos los productos agregados al carrito
+        _id:
+          type: ObjectId
+          description: id del carrito autogenerado por la base de datos
+      example:
+        products: "[ este array muestra todos los productos y sus carcateristicas ]"
+        _id: ObjectId('649c8f5c4ec2d20809ad0462')
