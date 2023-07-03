@@ -163,9 +163,9 @@ class cartController{
                 });
             };
 
-            const prodToDel = await cartService.deleteProductInCart(cid,pid);
+            await cartService.deleteProductInCart(cid,pid);
     
-            res.send({status: "succes", payload: prodToDel})
+            res.send({status: "succes", payload: "producto eliminado correctamente"})
         }catch(err){
             res.status(404).send({status: 'error', error: `${err}`})
         }
