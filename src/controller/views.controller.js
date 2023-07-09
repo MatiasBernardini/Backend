@@ -111,6 +111,16 @@ class viewsController {
             res.send(`<div>Hubo un error al cargar esta vista</div>`);
         }  
     }
+
+    static get_specificProduct = async (req, res) => {
+        try {
+            const productId = req.params.pid;
+            const product = await productService.getProductById(productId);
+            res.render("productDetail",product);
+        } catch (error) {
+            res.send(`<div>Hubo un error al cargar esta vista</div>`);
+        }
+    }
 }
 
 export {viewsController}

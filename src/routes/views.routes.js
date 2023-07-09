@@ -1,6 +1,8 @@
 import { Router, json } from "express";
 import { viewsController } from "../controller/views.controller.js";
+import { dbProductManager } from "../dao/db-managers/ProductManager.js";
 
+const productManeger = new dbProductManager ();
 const viewstRouter = Router ();
 
 viewstRouter.use (json());
@@ -18,6 +20,8 @@ viewstRouter.get("/reset-password", viewsController.get_ResetPass)
 viewstRouter.get("/profile", viewsController.get_Profile)
 
 viewstRouter.get( "/real_time_products",  viewsController.get_Products)
+
+viewstRouter.get("/products/:pid", viewsController.get_specificProduct )
 
 viewstRouter.get("/carts/:cid", viewsController.get_Cart_Id)
 
