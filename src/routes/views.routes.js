@@ -17,13 +17,8 @@ viewstRouter.get("/reset-password", viewsController.get_ResetPass)
 
 viewstRouter.get("/profile", viewsController.get_Profile)
 
-viewstRouter.get( "/products",  viewsController.get_Products)
+viewstRouter.get( "/real_time_products",  viewsController.get_Products)
 
 viewstRouter.get("/carts/:cid", viewsController.get_Cart_Id)
-
-// viewstRouter.get("/real_time_products", async (req,res)=>{
-//     const product = await products.getProducts()
-//     res.render("real_time_products", {product})                
-// })
 
 export default viewstRouter;

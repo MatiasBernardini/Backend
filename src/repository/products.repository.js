@@ -9,6 +9,11 @@ export class productsRepository{
         return product
     }
 
+    async getPaginateProductsRepository(query={},options={}){
+        const result = await this.dao.getPaginateProducts(query,options);
+        return result;
+    };
+
     async getProductById (id) {
         const product = await this.dao.getProductById(id)
 

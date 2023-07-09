@@ -32,6 +32,15 @@ class dbProductManager {
     return products
   }
 
+  async getPaginateProducts(query={},options={}){
+    try {
+        const result = await productsModel.paginate(query,options);
+        return result;
+    } catch (error) {
+        throw new Error(`Error get all ${error}`);
+    }
+  };
+
   async addProduct (title, description, price, code, stock, owner) {
     code = Math.floor(Math.random() * 100000000000)
 
