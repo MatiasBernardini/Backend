@@ -58,56 +58,59 @@ class viewsController {
 
     static get_Products = async (req, res) => {
         try {
-            const fullName = req.user.full_Name;
-            const {limit = 10,page=1,category,stock,sort="asc"} = req.query;
-            const stockValue = stock==0 ? undefined : parseInt(stock);
-            if(!["asc","desc"].includes(sort)){
-                return res.json({status:"error", mesage:"orden no valido"});
-            };
-            const sortValue= sort === "asc" ? 1 : -1;
-
-            let query={};
-            if (category && stockValue) {
-                query = { category: category, stock: {$gte:stockValue} };
-            } else {
-                if (category || stockValue) {
-                    if (category) {
-                      query = { category: category };
-                    } else {
-                      query = { stock: {$gte:stockValue} };
+            if (!req.user){
+                res.send (`Tiene que iniciar sesion, para ver todos los productos <a href="/login">Incia sesion</a>`)
+            } else{
+                const fullName = req.user.full_Name;
+                const {limit = 10,page=1,category,stock,sort="asc"} = req.query;
+                const stockValue = stock==0 ? undefined : parseInt(stock);
+                if(!["asc","desc"].includes(sort)){
+                    return res.json({status:"error", mesage:"orden no valido"});
+                };
+                const sortValue= sort === "asc" ? 1 : -1;
+    
+                let query={};
+                if (category && stockValue) {
+                    query = { category: category, stock: {$gte:stockValue} };
+                } else {
+                    if (category || stockValue) {
+                        if (category) {
+                          query = { category: category };
+                        } else {
+                          query = { stock: {$gte:stockValue} };
+                        }
                     }
-                }
-            };
-
-            const result = await productService.getPaginateProductsRepository(
-                query,
-                {
-                    page,
-                    limit,
-                    sort:{price:sortValue},
-                    lean:true,
-                }
-            );
-
-            const baseUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
-            const data ={
-                fullNameUser:fullName,
-                status:"success",
-                payload: result.docs,
-                totalDocs: result.totalDocs,
-                totalPages: result.totalPages,
-                prevPage: result.prevPage,
-                nextPage: result.nextPage,
-                page: result.page,
-                hasPrevPage: result.hasPrevPage,
-                hasNextPage: result.hasNextPage,
-                prevLink: result.hasPrevPage ? `${baseUrl.replace(`page=${result.page}`, `page=${result.prevPage}`)}` : null,
-                nextLink: result.hasNextPage ? baseUrl.includes("page") ?
-                baseUrl.replace(`page=${result.page}`, `page=${result.nextPage}`) :baseUrl.concat(`?page=${result.nextPage}`) : null
-            };
-            res.render("real_time_products", data);
+                };
+    
+                const result = await productService.getPaginateProductsRepository(
+                    query,
+                    {
+                        page,
+                        limit,
+                        sort:{price:sortValue},
+                        lean:true,
+                    }
+                );
+    
+                const baseUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
+                const data ={
+                    fullNameUser:fullName,
+                    status:"success",
+                    payload: result.docs,
+                    totalDocs: result.totalDocs,
+                    totalPages: result.totalPages,
+                    prevPage: result.prevPage,
+                    nextPage: result.nextPage,
+                    page: result.page,
+                    hasPrevPage: result.hasPrevPage,
+                    hasNextPage: result.hasNextPage,
+                    prevLink: result.hasPrevPage ? `${baseUrl.replace(`page=${result.page}`, `page=${result.prevPage}`)}` : null,
+                    nextLink: result.hasNextPage ? baseUrl.includes("page") ?
+                    baseUrl.replace(`page=${result.page}`, `page=${result.nextPage}`) :baseUrl.concat(`?page=${result.nextPage}`) : null
+                };
+                res.render("real_time_products", data);
+            }
         } catch (error) {
-
             res.send(`<div>Hubo un error al cargar esta vista</div>`);
         }  
     }
