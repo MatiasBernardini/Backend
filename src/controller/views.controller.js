@@ -1,5 +1,5 @@
 import { productService } from "../repository/index.js"
-import { CartManager} from "../dao/factory.js" /*revisar la funcion getCartProducts, ya que no funciona bien con service*/
+import { CartManager} from "../dao/factory.js" 
 import { GetUserDto } from "../dao/dto/user.dto.js";
 
 class viewsController {
@@ -31,18 +31,20 @@ class viewsController {
         } else {
             let userDto = new GetUserDto (req.user);
             const {full_Name, age, email, rol, cart} = userDto
+
+            const carrito = cart[0]._id
+            console.log(carrito)
     
             const userInfo = {
                 userFullName : full_Name,
                 userAge : age,
                 userEmail : email,
                 userRol : rol,
-                userCart : cart
+                userCart : carrito
             }
     
             res.render ("profile", {userInfo})
 
-            req.logger.info (userDto)
         }
     }
 
@@ -119,7 +121,11 @@ class viewsController {
         try {
             const productId = req.params.pid;
             const product = await productService.getProductById(productId);
-            res.render("productDetail",product);
+
+            const cart = req.user.cart;
+            const carrito = cart[0]._id
+
+            res.render("productDetail",{product, carrito});
         } catch (error) {
             res.send(`<div>Hubo un error al cargar esta vista</div>`);
         }

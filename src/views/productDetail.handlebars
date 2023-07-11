@@ -1,11 +1,17 @@
 <h1>Datos del Producto:</h1>
-{{#if _id}}
-    <h2>{{title}}:</h2>
-    <p>{{description}}</p>
-    <p>Precio: {{price}}</p>
-    <p>Unidades disponibles: {{stock}}</p>
-    <button onclick="addToCart(`{{_id}}`)">Agregar al carrito</button>
-{{else}}
-    <p>No hay detalles</p>
-{{/if}}
+
+<h3>Id de su carrito: {{carrito}}</h3>
+
+{{#each product}}
+    {{#if _id}}
+        <h2>{{title}}:</h2>
+        <p>{{description}}</p>
+        <p>Precio: {{price}}</p>
+        <p>Unidades disponibles: {{stock}}</p>
+        <form method="post" action="/api/carts/{{../carrito}}/products/{{this._id}}">
+            <button>Añadir al carrito</button>
+        </form>
+    {{/if}}
+{{/each}}
+
 <script src="/js/index.js"></script>
