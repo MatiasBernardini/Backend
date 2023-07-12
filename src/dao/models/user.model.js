@@ -41,6 +41,30 @@ const userSchema = new mongoose.Schema({
         ],
         default:[],
     },
+
+    avatar:{type:String, default:""},
+
+    documents:{
+        type:[
+            {
+                name:{type:String, required:true},
+                reference:{type:String, required:true}
+            }
+        ],
+        default:[]
+    },
+
+    status:{
+        type:String,
+        required:true,
+        enums:["completo","incompleto","pendiente"],
+        default:"pendiente"
+    },
+
+    last_connection:{
+        type: Date, //new Date()
+        default: null
+    }
 })
 
 

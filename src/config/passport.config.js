@@ -116,7 +116,11 @@ const initializedPassport = ()=>{
                 }
 
                 if (!isValidPassword (user, password)) return done (null, false);
-                return done (null, user);
+
+                user.last_connection = new Date().toLocaleString() 
+                const userUpdated = await userModel.findByIdAndUpdate(user._id,user);
+
+                return done (null, userUpdated);
 
             } catch (error) {
                 return done(error);

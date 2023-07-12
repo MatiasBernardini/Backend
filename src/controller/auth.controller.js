@@ -1,7 +1,7 @@
 import passport from "passport";
 import { sendRecoveryPass } from "../utils/email.js";
 import { generateEmailToken, verifyEmailToken, isValidPassword, createHash } from "../utils.js";
-import { findUSerService, findUSerAndUpdateService } from "../repository/user.repository.js";
+import { findUSerService, findUSerAndUpdateService, updateUserByIdService } from "../repository/user.repository.js";
 
 
 class authController{
@@ -102,8 +102,13 @@ class authController{
 
 
     static post_Logout = (req,res) =>{
-        req.session.destroy((err)=>{
+        const user = {...req.user};
+
+        user._doc.last_connection = new Date();
+
+        req.session.destroy(async (err)=>{
             if(err) return res.json({status:"error", message:"no se pudo cerrar la sesión"});
+            const userUpdated =  await updateUserByIdService(user._doc._id, user);
             res.redirect("/login");
         });
     }

@@ -26,3 +26,9 @@ export async function findUSerUpdateByIdService(id, userData) {
 
     return user;
 }
+
+export async function updateUserByIdService(id, userData) {
+    let user = await managerUser.updateUserById(id, userData);
+
+    return user;
+}

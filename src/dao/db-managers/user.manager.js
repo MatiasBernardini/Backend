@@ -28,4 +28,10 @@ export class userManager {
         return user
     }
 
+    async updateUserById(_id, userData) {
+        let user = userModel.findByIdAndUpdate(_id, userData);
+
+        return user
+    }
+
 }
