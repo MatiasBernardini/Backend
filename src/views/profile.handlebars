@@ -9,9 +9,11 @@
         <li>Email: "{{userInfo.userEmail}}"</li>
         <li>Rol: "{{userInfo.userRol}}"</li>
         <li>Carrito: "{{userInfo.userCart}}"</li>
+        <a href="/carts/{{userInfo.userCart}}">Ver su Carrito</a>
     </ul>
 </div>
 
+<br>
 
 <div>
     <form method="post" action="/api/sessions/logout">

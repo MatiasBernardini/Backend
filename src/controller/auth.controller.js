@@ -102,18 +102,10 @@ class authController{
 
 
     static post_Logout = (req,res) =>{
-        req.logOut((error) => {
-            if (error) {
-              return res.send("no se pudo cerrar la sesion");
-            } else {
-              req.session.destroy((err) => {
-                if (error) {
-                  return res.send("no se pudo cerrar la sesion");
-                }
-                res.redirect("/login");
-              });
-            }
-      });
+        req.session.destroy((err)=>{
+            if(err) return res.json({status:"error", message:"no se pudo cerrar la sesión"});
+            res.redirect("/login");
+        });
     }
 }
 
