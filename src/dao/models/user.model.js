@@ -42,7 +42,10 @@ const userSchema = new mongoose.Schema({
         default:[],
     },
 
-    avatar:{type:String, default:""},
+    avatar:{
+        type:String, 
+        default:""
+    },
 
     documents:{
         type:[

@@ -1,9 +1,11 @@
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import path from "path";
 import bcrypt from "bcrypt";
 import { Faker, es, en } from "@faker-js/faker";
 import jwt from "jsonwebtoken"
 import { options } from "./config/config.js"
+import multer from "multer";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -57,5 +59,68 @@ export const verifyEmailToken = (token)=>{
         return null;
     }
 };
+
+
+/* Multer */
+const validFields = (body)=>{
+    console.log ("body", body)
+    const {first_name, last_name, email, age, password} = body;
+    if(!first_name || !last_name || !email || !age || !password){
+        return false;
+    } else {
+        return true
+    }
+};
+
+const multerFilterProfile = (req,file,cb)=>{
+    const isValid = validFields(req.body);
+    if(!isValid){
+        cb(null, false)
+    } else {
+        cb(null, true)
+    }
+};
+
+/* Multer Profile */
+const profileStorage = multer.diskStorage({
+    //donde voy a guardar los archivos
+    destination: function(req,file,cb){
+        cb(null,path.join(__dirname,"/multer/users/images"))
+    },
+    //que nombre tendra el archivo que guardamos
+    filename: function(req,file,cb){
+        cb(null,`${req.body.email}-perfil-${file.originalname}`)
+    }
+});
+
+export const uploaderProfile = multer({storage:profileStorage, fileFilter: multerFilterProfile});
+
+/* Multer Documents */
+const documentStorage = multer.diskStorage({
+    //donde voy a guardar los archivos
+    destination: function(req,file,cb){
+        cb(null,path.join(__dirname,"/multer/users/documents"))
+    },
+    //que nombre tendra el archivo que guardamos
+    filename: function(req,file,cb){
+        cb(null,`${req.user.email}-documento-${file.originalname}`)
+    }
+});
+
+export const uploaderDocument = multer({storage:documentStorage});
+
+/* Multer images Products */
+const productStorage = multer.diskStorage({
+    //donde voy a guardar los archivos
+    destination: function(req,file,cb){
+        cb(null,path.join(__dirname,"/multer/products/images"))
+    },
+    //que nombre tendra el archivo que guardamos
+    filename: function(req,file,cb){
+        cb(null,`${req.body.code}-imagen-${file.originalname}`)
+    }
+});
+export const uploaderProduct = multer({storage:productStorage});
+
 
 export default __dirname;

@@ -58,7 +58,8 @@ const initializedPassport = ()=>{
                     age,
                     password:createHash(password),
                     rol,
-                    cart: await cartInUser.addCart()
+                    cart: await cartInUser.addCart(),
+                    avatar: req.file.filename
                 };
                 console.log (newUser)
                 const userCreated = await userModel.create(newUser);

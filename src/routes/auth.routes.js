@@ -1,12 +1,13 @@
 import {Router, json} from "express";
 import { authController } from "../controller/auth.controller.js";
+import { uploaderProfile } from "../utils.js";
 
 const authRouter = Router ()
 authRouter.use(json());
 
 /*-----------------------------SIGNUP--------------------------------------------------*/
 
-authRouter.post("/signup", authController.post_PassportSignup, authController.redirect_Profile);
+authRouter.post("/signup", uploaderProfile.single("avatar") ,authController.post_PassportSignup, authController.redirect_Profile);
 
 authRouter.get("/failure-signup", authController.get_FailedSignup);
 
