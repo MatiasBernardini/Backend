@@ -1,4 +1,4 @@
-import { findUserByIdService, findUSerUpdateByIdService, updateUserByIdService } from "../repository/user.repository.js";
+import { findUserByIdService, findUSerUpdateByIdService, updateUserByIdService, getUSerService } from "../repository/user.repository.js";
 
 export class userController {
     static put_Premium_User = async (req, res) => {
@@ -59,4 +59,18 @@ export class userController {
             res.json({status:"error", message:"hubo un error al intentar subir documentos"})
         }
     } 
+
+    static get_All_Users = async (req, res) => {
+        try {
+            const allUser = await getUSerService ()
+
+            const users = allUser.map(user=>({name:user.full_Name, email:user.email, rol:user.rol}))
+
+            res.json({status:"success", message: users})
+        } catch (error) {
+            console.log(error.message);
+            res.json({status:"error", message:"hubo un error al obtener todos los usuarios"})
+        }
+    
+    }
 }

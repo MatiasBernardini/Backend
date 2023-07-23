@@ -3,6 +3,11 @@ import userModel from "../models/user.model.js";
 export class userManager {
     constructor (){};
 
+    async getUsers() {
+        const users = userModel.find().lean()
+        return users
+    }
+
     async findUSer(email) {
         let user = userModel.findOne({ email: email });
 

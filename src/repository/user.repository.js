@@ -2,6 +2,12 @@ import { userManager } from "../dao/db-managers/user.manager.js";
 
 let managerUser = new userManager();
 
+export async function getUSerService() {
+    let user = await managerUser.getUsers();
+
+    return user;
+}
+
 
 export async function findUSerService(email) {
     let user = await managerUser.findUSer(email);

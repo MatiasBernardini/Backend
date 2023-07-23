@@ -11,4 +11,6 @@ usersRouter.put("/premium/:uid", checkRole(["admin"]) , userController.put_Premi
 
 usersRouter.put("/:uid/documents", checkAuthenticated , uploaderDocument.fields([{name:"identificacion",maxCount:1}, {name:"domicilio",maxCount:1},{name:"estadoDeCuenta",maxCount:1}]) , userController.put_Upload_Documents_User );
 
+usersRouter.get("/", userController.get_All_Users);
+
 export { usersRouter};
