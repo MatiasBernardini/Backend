@@ -1,0 +1,18 @@
+<h1>Informacion de cada usuario</h1>
+ 
+
+{{#each users}}
+    <div>
+        <ul> 
+            <li>Nombre: "{{full_Name}}"</li>
+            <li>Email: "{{email}}"</li>
+            <li>Rol: "{{rol}}"</li>
+            <a href="/get-users-specific/{{uid}}">Ver a detalle del usuario</a>
+            
+            <form method="put" action="/api/users/premium/{{uid}}">
+                <button>Cambiar de rol</button>
+            </form>
+
+        </ul>
+    </div>
+{{/each}}

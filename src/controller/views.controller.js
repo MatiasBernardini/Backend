@@ -1,6 +1,7 @@
 import { productService } from "../repository/index.js"
 import { CartManager} from "../dao/factory.js" 
 import { GetUserDto } from "../dao/dto/user.dto.js";
+import { getUSerService, findUserByIdService } from "../repository/user.repository.js";
 
 class viewsController {
     static get_Home = async (req, res) => {
@@ -128,6 +129,47 @@ class viewsController {
             res.render("productDetail",{product, carrito});
         } catch (error) {
             res.send(`<div>Hubo un error al cargar esta vista</div>`);
+        }
+    }
+
+    static get_Users = async (req, res) => {
+        if (req.user.rol !== "admin"){
+            res.send (`Acceso denegado, tienes que ser admin`)
+        } else {
+            const allUser = await getUSerService ()
+ 
+            const users = allUser.map(user=>({full_Name:user.full_Name, email:user.email, rol:user.rol, uid:user._id}))
+
+            console.log("users", users)
+    
+            res.render("getUsers", {users})
+        }
+    }
+
+    static get_SpecificUsers = async (req, res) => {
+        if (req.user.rol !== "admin"){
+            res.send (`Acceso denegado, no eres admin`)
+        } else {
+            const userId = req.params.uid;
+            const user = await findUserByIdService(userId);
+
+            let userDto = new GetUserDto (user);
+            const {full_Name, age, email, rol, cart} = userDto
+
+            const carrito = cart[0]._id
+            console.log(carrito)
+    
+            const userInfo = {
+                userFullName : full_Name,
+                userAge : age,
+                userEmail : email,
+                userRol : rol,
+                userCart : carrito
+            }
+
+            console.log("user", userInfo)
+    
+            res.render("getSpecificUser", {userInfo})
         }
     }
 }

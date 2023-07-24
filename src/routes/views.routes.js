@@ -25,4 +25,8 @@ viewstRouter.get("/products/:pid", viewsController.get_specificProduct )
 
 viewstRouter.get("/carts/:cid", viewsController.get_Cart_Id)
 
+viewstRouter.get ("/get-users", viewsController.get_Users )
+
+viewstRouter.get ("/get-users-specific/:uid", viewsController.get_SpecificUsers )
+
 export default viewstRouter;
