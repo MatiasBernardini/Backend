@@ -1,18 +1,23 @@
 <h1>Informacion de cada usuario</h1>
  
+{{#if isAdmin}}
+    {{#each users}}
+        <div>
+            <ul> 
+                <li>Nombre: "{{full_Name}}"</li>
+                <li>Email: "{{email}}"</li>
+                <li>Rol: "{{rol}}"</li>
+                <a href="/get-users-specific/{{uid}}">Ver detalles del usuario</a>
+            </ul>
 
-{{#each users}}
-    <div>
-        <ul> 
-            <li>Nombre: "{{full_Name}}"</li>
-            <li>Email: "{{email}}"</li>
-            <li>Rol: "{{rol}}"</li>
-            <a href="/get-users-specific/{{uid}}">Ver a detalle del usuario</a>
-            
-            <form method="put" action="/api/users/premium/{{uid}}">
-                <button>Cambiar de rol</button>
-            </form>
+            <ul>
+                <button onclick="changeRole(`{{uid}}`)">Cambiar de rol</button>
+            </ul>
+        </div>
+        <br> <br>
+    {{/each}}
+{{else}}
+    <p>lo lamentamos, no estas autorizado para ver todos los usuarios</p>
+{{/if}}
 
-        </ul>
-    </div>
-{{/each}}
+<script src="/js/index.js"></script>

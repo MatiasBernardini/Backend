@@ -133,17 +133,13 @@ class viewsController {
     }
 
     static get_Users = async (req, res) => {
-        if (req.user.rol !== "admin"){
-            res.send (`Acceso denegado, tienes que ser admin`)
-        } else {
-            const allUser = await getUSerService ()
- 
-            const users = allUser.map(user=>({full_Name:user.full_Name, email:user.email, rol:user.rol, uid:user._id}))
+        const allUser = await getUSerService ()
 
-            console.log("users", users)
-    
-            res.render("getUsers", {users})
-        }
+        const users = allUser.map(user=>({full_Name:user.full_Name, email:user.email, rol:user.rol, uid:user._id}))
+
+        // console.log("users", users.rol)
+
+        res.render("getUsers", {users, isAdmin: req.user.rol === "admin"})
     }
 
     static get_SpecificUsers = async (req, res) => {
@@ -167,7 +163,7 @@ class viewsController {
                 userCart : carrito
             }
 
-            console.log("user", userInfo)
+            // console.log("user", userInfo)
     
             res.render("getSpecificUser", {userInfo})
         }
