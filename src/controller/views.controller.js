@@ -56,7 +56,7 @@ class viewsController {
     
         const cartProducts = cart.products
     
-        res.render("cart", {cartProducts})
+        res.render("cart", {cartProducts, cid})
     }
 
     static get_Products = async (req, res) => {
