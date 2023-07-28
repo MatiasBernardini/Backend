@@ -35,3 +35,17 @@ export const sendRecoveryPass = async(userEmail,token)=>{
         `
     })
 };
+
+export const sendRemovedProductEmail = async(userEmail)=>{
+    await transporter.sendMail({
+        from:options.gmail.emailCreator,
+        to:userEmail,
+        subject:"Su producto publicado fue eliminado",
+        html:`
+            <div>
+                <h2>Producto eliminado</h2>
+                <p>Su producto fue eliminado de nuestra pagina web ya que no cumple con los criterios solicitados o es inapropiado</p>
+            </div>
+        `
+    })
+};

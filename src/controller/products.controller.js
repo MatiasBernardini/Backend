@@ -4,6 +4,8 @@ import { generateProductFaker } from "../utils.js"
 import { CustomError } from "../services/customError.service.js";
 import { EError } from "../enums/EError.js";
 import { generateProductErrorInfo, updateProductErrorInfo ,generateProductErrorParam } from "../services/productError.js";
+import { getUSerService, findUserByIdService } from "../repository/user.repository.js";
+import { sendRemovedProductEmail } from "../utils/email.js";
 
 
 class productsController {
@@ -123,9 +125,25 @@ class productsController {
                 const userId = JSON.parse(JSON.stringify(req.user._id));
 
                 if((req.user.rol === "premium" && productOwer == userId) || req.user.rol === "admin"){
+                    if(req.user.rol === "admin" && productOwer != userId){
+
+                        const allUser = await getUSerService ()
+
+                        const usersId = allUser.map(user=>({id:user._id}))
+    
+                        const usuarioEncontrado = usersId.filter(user => user.id == productOwer);
+
+                        const user = await findUserByIdService(usuarioEncontrado[0].id);
+
+                        const userEmail = user.email;
+
+                        await sendRemovedProductEmail (userEmail)    
+                    }
                     await productService.deleteProduct(productId);
+
                     return res.json({status:"success", message:"producto eliminado"});
-                } else {
+
+                }else {
                     res.json({status:"error", message:"no puedes borrar este producto"})
                 }
             } else {
