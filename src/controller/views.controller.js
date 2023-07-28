@@ -165,7 +165,7 @@ class viewsController {
 
             // console.log("user", userInfo)
     
-            res.render("getSpecificUser", {userInfo})
+            res.render("getSpecificUser", {userInfo, isAdmin: req.user.rol === "admin"})
         }
     }
 }

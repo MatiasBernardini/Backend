@@ -1,11 +1,15 @@
-<h2>Datos del usuario:</h2>
+{{#if isAdmin}}
+    <h2>Datos del usuario:</h2>
 
-<div>
-    <ul> 
-        <li>Nombre Completo: "{{userInfo.userFullName}}"</li>
-        <li>Edad: "{{userInfo.userAge}}"</li>
-        <li>Email: "{{userInfo.userEmail}}"</li>
-        <li>Rol: "{{userInfo.userRol}}"</li>
-        <li>Carrito: "{{userInfo.userCart}}"</li>
-    </ul>
-</div>
+    <div>
+        <ul> 
+            <li>Nombre Completo: "{{userInfo.userFullName}}"</li>
+            <li>Edad: "{{userInfo.userAge}}"</li>
+            <li>Email: "{{userInfo.userEmail}}"</li>
+            <li>Rol: "{{userInfo.userRol}}"</li>
+            <li>Carrito: "{{userInfo.userCart}}"</li>
+        </ul>
+    </div>
+{{else}}
+    <p>lo lamentamos, no estas autorizado para ver todos los usuarios</p>
+{{/if}}
