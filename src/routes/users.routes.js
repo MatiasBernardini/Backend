@@ -13,4 +13,6 @@ usersRouter.put("/:uid/documents", checkAuthenticated , uploaderDocument.fields(
 
 usersRouter.get("/", userController.get_All_Users);
 
+usersRouter.delete("/inactive-user-removed", userController.delete_UserRemovedDueToInactivity);
+
 export { usersRouter};

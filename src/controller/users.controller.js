@@ -1,4 +1,4 @@
-import { findUserByIdService, findUSerUpdateByIdService, updateUserByIdService, getUSerService } from "../repository/user.repository.js";
+import { findUserByIdService, findUSerUpdateByIdService, updateUserByIdService, getUSerService, userDeleteService } from "../repository/user.repository.js";
 
 export class userController {
     static put_Premium_User = async (req, res) => {
@@ -70,6 +70,34 @@ export class userController {
         } catch (error) {
             console.log(error.message);
             res.json({status:"error", message:"hubo un error al obtener todos los usuarios"})
+        }
+    
+    }
+
+    static delete_UserRemovedDueToInactivity = async (req, res) => {
+        try {
+            const allUser = await getUSerService ()
+
+            const currentDate = new Date();
+
+            const twoDaysAgo = new Date(currentDate.getDate() - 2);
+
+            const oldUsers = allUser.filter(user => user.last_connection <= twoDaysAgo);
+
+            console.log ("oldUsers", oldUsers)
+
+            if (oldUsers.length) {
+                const idsToDelete = oldUsers.map(user => {
+                    userDeleteService(user._id);
+                });
+                console.log(idsToDelete);
+                res.json({status:"success", message: "todos los usuarios viejos fueron eliminados"})
+            } else {
+                res.json({status:"error", message: "no hay usuarios inactivos para eliminar"})
+            }
+        } catch (error) {
+            console.log(error.message);
+            res.json({status:"error", message:"hubo un error al eliminar los usuarios viejos"})
         }
     
     }

@@ -38,3 +38,9 @@ export async function updateUserByIdService(id, userData) {
 
     return user;
 }
+
+export async function userDeleteService(uid) {
+    let user = await managerUser.userDelete(uid);
+
+    return user;
+}

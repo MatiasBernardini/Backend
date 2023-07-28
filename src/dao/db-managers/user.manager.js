@@ -4,7 +4,7 @@ export class userManager {
     constructor (){};
 
     async getUsers() {
-        const users = userModel.find().lean()
+        const users = await userModel.find().lean()
         return users
     }
 
@@ -36,6 +36,11 @@ export class userManager {
     async updateUserById(_id, userData) {
         let user = userModel.findByIdAndUpdate(_id, userData);
 
+        return user
+    }
+
+    async userDelete(uid) {
+        const user = await userModel.findByIdAndDelete(uid)
         return user
     }
 
