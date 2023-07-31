@@ -13,6 +13,8 @@ usersRouter.put("/:uid/documents", checkAuthenticated , uploaderDocument.fields(
 
 usersRouter.get("/", userController.get_All_Users);
 
-usersRouter.delete("/inactive-user-removed", userController.delete_UserRemovedDueToInactivity);
+usersRouter.delete("/inactive-user-removed", checkRole(["admin"]) , userController.delete_UserRemovedDueToInactivity);
+
+usersRouter.delete("/:uid", checkRole(["admin"]) , userController.delete_User );
 
 export { usersRouter};

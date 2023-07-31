@@ -137,8 +137,6 @@ class viewsController {
 
         const users = allUser.map(user=>({full_Name:user.full_Name, email:user.email, rol:user.rol, uid:user._id}))
 
-        // console.log("users", users.rol)
-
         res.render("getUsers", {users, isAdmin: req.user.rol === "admin"})
     }
 

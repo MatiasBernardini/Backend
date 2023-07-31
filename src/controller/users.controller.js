@@ -104,4 +104,23 @@ export class userController {
         }
     
     }
+
+    static delete_User = async (req, res) => {
+        try {
+            const userId = req.params.uid;
+            const user = await findUserByIdService(userId);
+
+            if(user){
+                if(req.user.rol === "admin"){
+                    await userDeleteService(user);
+
+                    return res.json({status:"success", message:"usuario eliminado de la db"});
+                }    
+            } else {
+                return res.json({status:"error", message:"El usuario no existe o el id es incorrecto"});
+            }
+        } catch (error) {
+            res.send(error.message);
+        }
+    }
 }
