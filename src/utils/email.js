@@ -49,3 +49,17 @@ export const sendRemovedProductEmail = async(userEmail)=>{
         `
     })
 };
+
+export const sendDeletedUserEmail = async(userEmail)=>{
+    await transporter.sendMail({
+        from:options.gmail.emailCreator,
+        to:userEmail,
+        subject:"Su usuario fue eliminado por un admin",
+        html:`
+            <div>
+                <h2>Cuenta Eliminada</h2>
+                <p>Su cuenta fue eliminada de nuestra pagina web ya que no cumple con los criterios solicitados o es inapropiada</p>
+            </div>
+        `
+    })
+};

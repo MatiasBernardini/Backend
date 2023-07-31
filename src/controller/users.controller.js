@@ -1,4 +1,5 @@
 import { findUserByIdService, findUSerUpdateByIdService, updateUserByIdService, getUSerService, userDeleteService } from "../repository/user.repository.js";
+import { sendDeletedUserEmail } from "../utils/email.js";
 
 export class userController {
     static put_Premium_User = async (req, res) => {
@@ -80,17 +81,19 @@ export class userController {
 
             const currentDate = new Date();
 
-            const twoDaysAgo = new Date(currentDate.getDate() - 2);
+            const twoDaysAgo = currentDate.setHours (currentDate.getHours() - 48);
 
             const oldUsers = allUser.filter(user => user.last_connection <= twoDaysAgo);
 
-            console.log ("oldUsers", oldUsers)
-
             if (oldUsers.length) {
-                const idsToDelete = oldUsers.map(user => {
+                const usersOldToDelete = oldUsers.map(user => {
+                    const deletedUserEmail = user.email 
+
+                    sendDeletedUserEmail (deletedUserEmail)
+
                     userDeleteService(user._id);
                 });
-                console.log(idsToDelete);
+
                 res.json({status:"success", message: "todos los usuarios viejos fueron eliminados"})
             } else {
                 res.json({status:"error", message: "no hay usuarios inactivos para eliminar"})
