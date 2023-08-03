@@ -34,7 +34,6 @@ class viewsController {
             const {full_Name, age, email, rol, cart} = userDto
 
             const carrito = cart[0]._id
-            console.log(carrito)
     
             const userInfo = {
                 userFullName : full_Name,
@@ -151,7 +150,6 @@ class viewsController {
             const {full_Name, age, email, rol, cart} = userDto
 
             const carrito = cart[0]._id
-            console.log(carrito)
     
             const userInfo = {
                 userFullName : full_Name,
@@ -160,8 +158,6 @@ class viewsController {
                 userRol : rol,
                 userCart : carrito
             }
-
-            // console.log("user", userInfo)
     
             res.render("getSpecificUser", {userInfo, isAdmin: req.user.rol === "admin"})
         }

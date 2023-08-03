@@ -32,7 +32,6 @@ export class userController {
             const userId = req.params.uid;
             const user = await findUserByIdService(userId);
             if(user){
-                console.log(req.files);
                 const identificacion = req.files['identificacion']?.[0] || null;
                 const domicilio = req.files['domicilio']?.[0] || null;
                 const estadoDeCuenta = req.files['estadoDeCuenta']?.[0] || null;

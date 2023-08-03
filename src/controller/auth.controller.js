@@ -88,9 +88,9 @@ class authController{
                 ...user._doc,
                 password:createHash(newPassword)
             }
-            console.log("userData",userData)
 
             const userUpdate = await findUSerAndUpdateService(email, userData);
+            
             res.render("login",{message:"Se ha actualiza correctamente la contraseña"});
         } catch (error) {
             console.log ("error", error)

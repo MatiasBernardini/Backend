@@ -61,7 +61,7 @@ const initializedPassport = ()=>{
                     cart: await cartInUser.addCart(),
                     avatar: req.file.filename
                 };
-                console.log (newUser)
+
                 const userCreated = await userModel.create(newUser);
                 return done(null,userCreated);
             } catch (error) {
