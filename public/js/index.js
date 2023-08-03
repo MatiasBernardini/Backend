@@ -31,5 +31,8 @@ function purchase (cid){
     const purchase = fetch(`http://localhost:8080/api/carts/${cid}/purchase`, {method:"post"})
     .then((res) => res.json())
     .then((data) => data);
+
+    window.location.href = '/purchase'
+
     return purchase
 }

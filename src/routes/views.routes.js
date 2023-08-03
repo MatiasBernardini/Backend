@@ -29,4 +29,6 @@ viewstRouter.get ("/get-users", viewsController.get_Users )
 
 viewstRouter.get ("/get-users-specific/:uid", viewsController.get_SpecificUsers )
 
+viewstRouter.get("/purchase", viewsController.get_Purchase)
+
 export default viewstRouter;

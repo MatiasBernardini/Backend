@@ -166,6 +166,10 @@ class viewsController {
             res.render("getSpecificUser", {userInfo, isAdmin: req.user.rol === "admin"})
         }
     }
+
+    static get_Purchase = async (req, res) => {
+        res.render ("purchase")
+    }
 }
 
 export {viewsController}
