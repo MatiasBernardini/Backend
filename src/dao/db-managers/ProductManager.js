@@ -17,15 +17,6 @@ class dbProductManager {
     let paginate = { limit: newLimit, page: newPage, sort: sort };
  
     let newQuery
-    // if (query.stock){
-    //     newQuery = {
-    //         stock: query.stock
-    //     }
-    // } else if (query.stock){
-    //     newQuery = {stock: query.stock}
-    // } else {
-    //     newQuery = {}
-    // }   FIJARSE QUE ESTO ME ESTA DANDO ERROR AL ACTUALIZAR Y BORRAR PRODUCTOS
 
     const products = await productsModel.paginate(newQuery, paginate)
 
@@ -67,7 +58,7 @@ class dbProductManager {
     }catch(err){
         throw new Error(err)
     }
-}
+  }
 
   async updateProduct(id, propModify){
     try{
@@ -85,16 +76,16 @@ class dbProductManager {
     }catch(err){
         throw new Error(err)
     }
-}
-
-async updateQuantityDb(id, stock){
-  try{
-      const result = await productsModel.findOneAndUpdate({_id: id}, {stock: stock}, {new: true})
-      return result
-  }catch(err){
-      throw new Error(err)
   }
-}
+
+  async updateQuantityDb(id, stock){
+    try{
+        const result = await productsModel.findOneAndUpdate({_id: id}, {stock: stock}, {new: true})
+        return result
+    }catch(err){
+        throw new Error(err)
+    }
+  }
 }
 
 export  {dbProductManager}; 
